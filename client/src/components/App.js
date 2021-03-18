@@ -17,6 +17,8 @@ import {
 
 import axios from 'axios';
 import Login from './Auth/Login';
+import Home from './Home/HomePage';
+import Calendar from 'react-calendar';
 axios.defaults.withCredentials = true;
 
 function App() {
@@ -32,6 +34,16 @@ function App() {
             path="/login" 
             render={
               () => <Login/>
+            } />
+            <Route 
+            path="/calendar" exact
+              render={
+                () => <Calendar/>
+              }/>
+            <Route 
+            path="/home" 
+            render={
+              () => <Home/>
             } />
       </Switch>
       <Footer />
