@@ -1,0 +1,14 @@
+.login-screen{
+    padding: 7.5rem 20rem;
+}
+.login-text{
+    text-align: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    margin-top: 5rem;
+}
+.login-image{
+    margin-right: 5%;
+}
+.login-button{
+    margin-top: 5%;
+}
