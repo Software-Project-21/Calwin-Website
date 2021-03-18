@@ -1,12 +1,4 @@
 import React from 'react';
-import './App.css';
-import Home from './pages/HomePage/Home';
-import Services from './pages/Services/Services';
-import SignUp from './pages/SignUp/SignUp';
-// import { BrowserRouter as Router, Switch, Route, Redirect} from 'react-router-dom';
-import Navbar from './Navbar';
-import Footer from './pages/Footer.js/Footer';
-import Success from './success'
 
 import {
   BrowserRouter as Router,
@@ -22,19 +14,17 @@ axios.defaults.withCredentials = true;
 function App() {
   return (
     <Router>
-      <Navbar />
+    {/* <Login/> */}
       <Switch>
-        <Route path='/' exact component={Home} />
-        <Route path='/services' component={Services} />
-        <Route path='/sign-up' component={Login} />
-        <Route path='/success' component={Success} />
-        <Route 
+           <Route 
             path="/login" 
             render={
               () => <Login/>
             } />
+            <Route path="/" exact>
+              <h1> CalWin </h1>
+            </Route>
       </Switch>
-      <Footer />
     </Router>
   );
 }
