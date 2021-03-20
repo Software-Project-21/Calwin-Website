@@ -5,7 +5,7 @@ import Calendar from './Calendar';
 // import './home.css';
 import Sidebar from '../Sidebar/Sidebar';
 
-export default function Home() {
+export default function HomePage() {
     
     return (
         <div style={{display:"flex"}}>

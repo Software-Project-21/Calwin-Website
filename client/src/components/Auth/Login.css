@@ -1,5 +1,6 @@
 .login-screen{
-    padding: 7.5rem 20rem;
+    margin-top: 200px;
+    margin-right: 100px;
 }
 .login-text{
     text-align: center;
@@ -7,8 +8,16 @@
     margin-top: 5rem;
 }
 .login-image{
-    margin-right: 5%;
+    margin: 10% 2%;
+    max-width: 80%;
 }
 .login-button{
-    margin-top: 5%;
+    margin-top: 10%;
+}
+.login-container{
+    display: flex;
+    justify-content: space-around;
+}
+.image-container{
+    max-width: 50%;
 }
