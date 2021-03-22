@@ -1,6 +1,7 @@
 import React, { useContext, useState,useEffect} from 'react';
 import { auth} from "../../firbase";
 import firebase from "../../firbase";
+import { useHistory } from 'react-router';
 
 const AuthContext = React.createContext();
 
@@ -8,12 +9,21 @@ export function useAuth(){
     return useContext(AuthContext);
 }
 
+
+export function isLoggedIn() {
+    if(localStorage.getItem("@token")!==null){
+        return true;
+    } 
+    return false;
+}
+    
+
 export function AuthProvider({children}){
     const [currentUser,setCurrentUser] = useState();
     const [loading,setLoading] = useState(true);
+    const history = useHistory();
 
     async function googleLogin(){
-
         const provider = new firebase.auth.GoogleAuthProvider();
         // firebase.auth.useDeviceLanguage();
         await auth.signInWithPopup(provider).then(
@@ -25,10 +35,10 @@ export function AuthProvider({children}){
             //5 - put the token at localStorage (We'll use this to make requests)
             localStorage.setItem("@token", token);
             //6 - navigate user to the book list
-            // history.push("/calendar");
+            history.push("/calendar");
             }
-            var user = result.user;
-            console.log(user);
+            // var user = result.user;
+            // console.log(user);
         },
         function (err) {
             console.log(err);
@@ -38,6 +48,7 @@ export function AuthProvider({children}){
 
     useEffect(() => {
         const unsubscribe = firebase.auth().onAuthStateChanged(user => {
+            // console.log(user);
             setCurrentUser(user);
             setLoading(false);
         })
@@ -47,6 +58,7 @@ export function AuthProvider({children}){
     function  logOut() {
         return firebase.auth().signOut();
     }
+
     const value = {
         currentUser,
         googleLogin,

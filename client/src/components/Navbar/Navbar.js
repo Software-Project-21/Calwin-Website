@@ -1,14 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { Button } from './Button';
-import { Link } from 'react-router-dom';
+import React, { useState} from 'react';
+import { Button } from '../Button';
+import { Link,useHistory } from 'react-router-dom';
 import './Navbar.css';
 import { MdFingerprint } from 'react-icons/md';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { IconContext } from 'react-icons/lib';
+import {useAuth} from '../Auth/AuthContext';
 
 function Navbar() {
   const [click, setClick] = useState(false);
   const [button, setButton] = useState(true);
+  const [error,setError] = useState("");
+  const history = useHistory();
+  const {logOut,currentUser} = useAuth();
 
   const handleClick = () => setClick(!click);
   const closeMobileMenu = () => setClick(false);
@@ -20,6 +24,28 @@ function Navbar() {
       setButton(true);
     }
   };
+
+  async function handleLogOut(){
+    setError('');
+    try {
+      await logOut();
+      history.push('/login');
+    } catch {
+      setError("Failed to Log Out");
+    }
+    
+  }
+  async function handleLogOutM(){
+    setClick(false);
+    setError('');
+    try {
+      await logOut();
+      history.push('/login');
+    } catch {
+      setError("Failed to Log Out");
+    }
+    
+  }
 
   // useEffect(() => {
   //   showButton();
@@ -68,21 +94,37 @@ function Navbar() {
               </li>
               <li className='nav-btn'>
                 {button ? (
-                  <Link to='/login' className='btn-link'>
-                    <Button buttonStyle='btn--outline'>SIGN UP</Button>
-                  </Link>
+                  !currentUser ? (
+                   <Link to='/login' className='btn-link'>
+                    <Button buttonStyle='btn--outline'>SIGN IN</Button>
+                  </Link> ) : (
+                      <Button buttonStyle='btn--outline' onClick={handleLogOut}>Log Out</Button>
+                  )
                 ) : (
+                  !currentUser ? (
                   <Link to='/login' className='btn-link'>
                     <Button
                       buttonStyle='btn--outline'
                       buttonSize='btn--mobile'
                       onClick={closeMobileMenu}
                     >
-                      SIGN UP
+                      SIGN IN
                     </Button>
-                  </Link>
+                  </Link> ) : (
+                    <Button
+                      buttonStyle='btn--outline'
+                      buttonSize='btn--mobile'
+                      onClick={handleLogOutM}
+                    >
+                      Log Out
+                    </Button>
+                  )
+                  
                 )}
               </li>
+              {/* <li>
+                <Button buttonStyle='btn--outline' onClick={logOut}>Log Out</Button>
+              </li> */}
             </ul>
           </div>
         </nav>

@@ -1,16 +1,17 @@
 import React from 'react';
 import HeroSection from '../../HeroSection';
-import { homeObjOne, homeObjTwo, homeObjThree, homeObjFour } from '../HomePage/Data';
-// import Pricing from '../../Pricing';
+import Navbar from '../../Navbar/Navbar';
+import Footer from '../Footer.js/Footer';
+import { homeObjOne,homeObjFour } from '../HomePage/Data';
+
 
 function Services() {
   return (
     <>
-      {/* <Pricing /> */}
-      {/* <HeroSection {...homeObjOne} /> */}
-      
+      <Navbar/>
       <HeroSection {...homeObjOne} />
       <HeroSection {...homeObjFour} />
+      <Footer/>
     </>
     
   );

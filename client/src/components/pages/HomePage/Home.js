@@ -1,12 +1,16 @@
 import React from 'react';
 import HeroSection from '../../HeroSection';
-import { homeObjOne, homeObjTwo, homeObjThree, homeObjFour } from './Data';
+import Navbar from '../../Navbar/Navbar';
+import Footer from '../Footer.js/Footer';
+import { homeObjOne, homeObjFour } from './Data';
 
 function Home() {
   return (
     <>
+      <Navbar/>
       <HeroSection {...homeObjOne} />
       <HeroSection {...homeObjFour} />
+      <Footer/>
     </>
   );
 }

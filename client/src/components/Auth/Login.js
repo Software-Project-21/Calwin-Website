@@ -1,22 +1,25 @@
 import React, { useState } from 'react';
-import { useHistory } from "react-router-dom";   
 import {ReactComponent as GoogleIcon} from '../googleIcon.svg';
 import {useAuth} from './AuthContext';
 import Button from '@material-ui/core/Button';
 import './Login.css'
+import Navbar from '../Navbar/Navbar';
+import Footer from '../pages/Footer.js/Footer';
 
 export default function Login() {
   const [loading,setLoading] = useState(false);
-  const history = useHistory();
   
   const {googleLogin,currentUser} = useAuth();
-  const handleLogin = () => {
+ 
+  function handleLogin(){
     setLoading(true);
     googleLogin();
-    history.push('/calendar');
     setLoading(false);
   }
+
   return (
+    <>
+      <Navbar/>
       <div className="login-container">
           <div className="image-container">
                 <img className="login-image" src="images/login.svg" alt="login"></img>
@@ -25,7 +28,7 @@ export default function Login() {
             <div className="login-screen">
               <h1>
                 Welcome to CalWin - Sign In <hr/>
-                {currentUser.email}
+                {currentUser && currentUser.email}
               </h1>
               <div className="login-button" style={{margin:"2% 1%",display:"inline-block"}}>
               <Button disabled={loading} onClick={handleLogin} style={{backgroundColor: "rgb(66, 133, 244)", color: "white"}} color="secondary">
@@ -33,8 +36,9 @@ export default function Login() {
               </Button>
               </div>
             </div>
-          
           </div>
       </div>
+      <Footer/>
+    </>
   );
 }
