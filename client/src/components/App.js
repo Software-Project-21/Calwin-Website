@@ -17,24 +17,37 @@ import {
 
 import axios from 'axios';
 import Login from './Auth/Login';
+import HomePage from './Home/HomePage';
+import { AuthProvider} from './Auth/AuthContext';
+import PrivateRoute from './PrivateRoute';
+// import Calendar from 'react-calendar';
 axios.defaults.withCredentials = true;
 
 function App() {
   return (
     <Router>
-      <Navbar />
-      <Switch>
-        <Route path='/' exact component={Home} />
-        <Route path='/services' component={Services} />
-        <Route path='/sign-up' component={Login} />
-        <Route path='/success' component={Success} />
-        <Route 
-            path="/login" 
+      <AuthProvider>
+        <Navbar />
+        <Switch>
+          <Route path='/' exact component={Home} />
+          <Route path='/services' component={Services} />
+          <Route path='/sign-up' component={Login} />
+          <Route path='/success' component={Success} />
+          <Route path="/login" 
             render={
-              () => <Login/>
-            } />
-      </Switch>
-      <Footer />
+                () => <Login/>
+          } />
+          <PrivateRoute path='/calendar' component={HomePage}/>
+          {/* <Route 
+          path="/calendar" exact
+            render={
+              (props) => {
+                currentUser ? <HomePage {...props}/> : <Redirect to='/login'/>
+              }
+            }/> */}
+        </Switch>
+        <Footer />
+      </AuthProvider>
     </Router>
   );
 }
