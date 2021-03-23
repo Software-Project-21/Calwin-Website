@@ -21,6 +21,7 @@ export function isLoggedIn() {
 export function AuthProvider({children}){
     const [currentUser,setCurrentUser] = useState();
     const [loading,setLoading] = useState(true);
+    const [user,setUser] = useState({});
     const history = useHistory();
 
     async function googleLogin(){
@@ -37,8 +38,14 @@ export function AuthProvider({children}){
             //6 - navigate user to the book list
             history.push("/calendar");
             }
-            // var user = result.user;
-            // console.log(user);
+            var usr = result.user;
+            const tmpuser = {
+                name: usr.displayName,
+                email: usr.email,
+                photoUrl: usr.photoURL
+            }
+            setUser(tmpuser);
+            console.log(usr);
         },
         function (err) {
             console.log(err);

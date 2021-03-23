@@ -1,21 +1,27 @@
 .calendar {
-    margin: 5% 5%;
+    /* margin: ; */
     box-sizing: border-box;
     font-size: 1rem;
     width: 100%;
-
 }
 
 .calendar .header {
     background-color: light-blue;
     text-align: center;
     min-height: 2rem;
-    line-height: 2rem;
+    /* line-height: 2rem; */
     color: black;
     font-family: var(--font-book);
     font-weight: 700;
+    margin-top: 5px;
+    /* width: 50%; */
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
+    /* display: block; */
+}
+
+.calendar .header div {
+    display: inline-block;
 }
 
 .current{
@@ -23,24 +29,23 @@
 }
 
 .calendar .navigation{
-    /* display: inline-block; */
-    box-sizing: border-box;
-    border: 2px solid rgba(229,229,228,0.5);
-    border-radius: 5px;
-    padding-top: 6px;
+    margin-top: 5px;
 }
 
 .calendar .day-names {
     display: flex;
     flex-wrap: wrap;
     max-width: 2000px;
-    margin: 0 auto;
     align-items: center;
     font-weight: 700;
 }
 
 .calendar .body {
     border: 1px solid light-blue;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    border: #dadce0 1px solid;
 }
 
 /* .calendar .header .previous {
@@ -62,6 +67,8 @@
     text-transform: uppercase;
     color: black;
     font-weight: 400;
+    border: #dadce0 1px solid;
+    /* display: flex; */
 }
 
 .calendar .week div {
@@ -73,11 +80,14 @@
     position: relative;
     width: calc(100% / 7);
     height: 100px;
-    display: inline-block;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     background-color: white;
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+    border: #dadce0 1px solid;
     z-index: 1;
     text-align: center;
     cursor: pointer;
@@ -86,11 +96,14 @@
 .calendar .day div {
     text-align: center;
     width: calc(100% / 7);
-    height: 44px;
+    height: 40px;
+    width: 40px;
     position: relative;
     color: black;
     z-index: 100;
     line-height: 44px;
+    border-radius: 98% 95%;
+    padding: auto 5px;
 }
 
 .calendar .day div.before {

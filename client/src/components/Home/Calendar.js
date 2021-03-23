@@ -4,6 +4,7 @@ import buildCalendar from './build';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 import './calendar.css'
+import { Button } from '@material-ui/core';
 
 function Calendar() {
 
@@ -59,25 +60,32 @@ function Calendar() {
     return (
         <div className="calendar">
             <div className="header">
-                <div className="navigation" onClick={() => setVal(prevMonth())}>
-                    <NavigateBeforeIcon />
+                <div>
+                    <div className="navigation" onClick={() => setVal(prevMonth())}>
+                        <NavigateBeforeIcon />
+                    </div>
+                    <div className="navigation" onClick={()=> setVal(nextMonth())}>
+                        <NavigateNextIcon />
+                    </div>
                 </div>
                 <div className="current">
                     {curMonth()} {curYear()}
                 </div>
-                <div className="navigation" onClick={()=> setVal(nextMonth())}><NavigateNextIcon /></div>
-            </div>
-            <div>
-
+                <div>
+                    <Button variant="contained" color="primary">View</Button>
+                </div>
             </div>
             <div className="body">
                 <div className="day-names">
-                    {["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"].map((d) => (
-                        <div className="week">{d}</div>
-                    ))}
+                    {["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"].map((d) => {
+                        if(d==="SAT" || d==="SUN"){
+                            return (<div className="week" style={{color:"red"}}>{d}</div>);
+                        }
+                        return (<div className="week">{d}</div>);
+                    })}
                 </div>
                 {calendar.map((week) => (
-                    <div>
+                    <div style={{display:"flex"}}>
                         {week.map((day) => (
                             <div className="day" onClick={() => setVal(day)}>
                                 <div className={dayStyles(day)}>{day.format("D")}</div>

@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-// import Calendar from 'react-calendar';
-// import 'react-calendar/dist/Calendar.css';
 import Calendar from './Calendar';
-// import './home.css';
 import Sidebar from '../Sidebar/Sidebar';
+import SearchBar from "./SearchBar";
 import {useAuth} from "../Auth/AuthContext";
 import { Redirect } from 'react-router';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
@@ -22,8 +20,11 @@ export default function HomePage() {
             {currentUser ? 
             <div style={{display:"flex"}}>
                 <Sidebar/>
-                <Calendar/>
-                <AddCircleIcon onClick={() => handleAddEvent('paper')}/>    
+                <div style={{width:"100%"}} >
+                    <SearchBar/>
+                    <Calendar/>
+                </div>
+                {/* <AddCircleIcon onClick={() => handleAddEvent('paper')}/>     */}
                 <AddEvent open={open} setOpen={setOpen} scroll={scroll} setScroll={setScroll}/>
             </div> : 
             <Redirect to="/login"/>
