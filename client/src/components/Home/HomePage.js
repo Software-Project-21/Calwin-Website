@@ -20,7 +20,7 @@ export default function HomePage() {
             {currentUser ? 
             <div style={{display:"flex"}}>
                 <Sidebar/>
-                <div>
+                <div style={{width:"100%"}} >
                     <SearchBar/>
                     <Calendar/>
                 </div>

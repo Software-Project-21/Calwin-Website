@@ -12,6 +12,7 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import {useAuth} from "../Auth/AuthContext";
+import { Avatar, Typography } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -93,7 +94,7 @@ export default function SearchBar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
-  const {logOut}  = useAuth();
+  const {logOut,currentUser}  = useAuth();
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
@@ -156,10 +157,11 @@ export default function SearchBar() {
           aria-label="account of current user"
           aria-controls="primary-search-account-menu"
           aria-haspopup="true"
+          style={{borderRadius:"10%"}}
         >
-          <AccountCircle style={{ color: "black"}}/>
+            <Avatar alt="profile pic" src={currentUser.photoURL}/>
+            <p style={{marginLeft:"2px",fontSize:"1rem"}}>{currentUser.displayName}</p>
         </IconButton>
-        <p>Profile</p>
       </MenuItem>
     </Menu>
   );
@@ -194,9 +196,11 @@ export default function SearchBar() {
               aria-controls={menuId}
               aria-haspopup="true"
               onClick={handleProfileMenuOpen}
-              color="inherit"
+              style={{borderRadius:"10%"}}
+            //   color="inherit"
             >
-              <AccountCircle style={{ color: "black" }} />
+              <Avatar alt="profile pic" src={currentUser.photoURL}/>
+              <p style={{marginLeft:"2px",fontSize:"1rem"}}>{currentUser.displayName}</p>
             </IconButton>
           </div>
           <div className={classes.sectionMobile}>
