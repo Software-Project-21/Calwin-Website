@@ -1,4 +1,4 @@
-const {firebase} = require("../firebase/admin");
+const {admin} = require("../firebase/admin");
 
 function auth(req, res, next) {
   const headerToken = req.headers.authorization;
@@ -11,10 +11,13 @@ function auth(req, res, next) {
   }
 
   const token = headerToken.split(" ")[1];
-  firebase
+  admin
     .auth()
     .verifyIdToken(token)
-    .then(() => next())
+    .then((decodedToken) => {
+      req.user = decodedToken;
+      return next();
+    })
     .catch(() => res.send({ message: "Could not authorize" }).status(403));
 }
 

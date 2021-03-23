@@ -9,7 +9,7 @@ import Footer from '../pages/Footer.js/Footer';
 export default function Login() {
   const [loading,setLoading] = useState(false);
   
-  const {googleLogin,currentUser} = useAuth();
+  const {currentUser,googleLogin} = useAuth();
  
   function handleLogin(){
     setLoading(true);
