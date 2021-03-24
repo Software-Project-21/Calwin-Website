@@ -4,11 +4,15 @@ import buildCalendar from './build';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 import './calendar.css'
+// import {SERVER_URL} from "../../utils/constants";
 import { Button } from '@material-ui/core';
 import ControlledOpenSelect from './ControlledOpenSelect';
 import TodayIcon from '@material-ui/icons/Today';
 // import weekly from './weekly';
 // import {ViewDropdown} from './ViewDropdown';
+import axios from "axios";
+require('dotenv').config();
+
 
 function Calendar(props) {
 
@@ -17,8 +21,35 @@ function Calendar(props) {
 
     useEffect(() => {
         setCalendar(buildCalendar(props.val,viewType));
-
     },[props.val,viewType]);
+    
+    const [holidays,setHolidays] = useState([{}]);
+    const [year,setYear] = useState(2021);
+
+    useEffect(() =>{
+        axios.defaults.withCredentials = false;
+        axios.get(`https://calendarific.com/api/v2/holidays?&api_key=8f7fc6ffe50904caf1e6caf88ed839004a6c8c66&country=in&year=${year}`)
+        .then(res => res.data)
+        .then(data =>{
+            // setHolidays(data.response.holidays);
+            console.log(data.response.holidays);
+            // const tmp = data.response.holidays;
+            // console.log(tmp);
+            setHolidays(data.response.holidays);
+            // console.log(holidays);
+        }).catch(err =>{
+            console.log(err);
+        })
+    },[year])
+
+
+    useEffect(() => {
+        if(props.val.clone().year()!==year){
+            console.log(year);
+            setYear(props.val.clone().year());
+            console.log(props.val.clone().year());
+        }
+    },[props.val,year]);
 
     function isSelected(day){
         return props.val.isSame(day,"day");
