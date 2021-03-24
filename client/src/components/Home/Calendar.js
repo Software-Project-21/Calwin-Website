@@ -5,24 +5,28 @@ import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 import './calendar.css'
 import { Button } from '@material-ui/core';
+import ControlledOpenSelect from './ControlledOpenSelect';
+import TodayIcon from '@material-ui/icons/Today';
+// import weekly from './weekly';
+// import {ViewDropdown} from './ViewDropdown';
 
-function Calendar() {
+function Calendar(props) {
 
     const [calendar,setCalendar] = useState([]);
-    const [val,setVal] = useState(moment());
+    const [viewType, setviewType] = React.useState("month");
 
     useEffect(() => {
-        setCalendar(buildCalendar(val));
+        setCalendar(buildCalendar(props.val,viewType));
 
-    },[val]);
+    },[props.val,viewType]);
 
     function isSelected(day){
-        return val.isSame(day,"day");
+        return props.val.isSame(day,"day");
     }
 
     function checkMonth(day){
-        const startMon = val.clone().startOf("month");
-        const endMon = val.clone().endOf("month");
+        const startMon = props.val.clone().startOf("month");
+        const endMon = props.val.clone().endOf("month");
         if(day.isBefore(startMon) || day.isAfter(endMon)){
             return true;
         } else {
@@ -42,40 +46,130 @@ function Calendar() {
     }
 
     function curMonth() {
-        return val.format("MMMM");
+        return props.val.format("MMMM");
     }
 
     function curYear() {
-        return val.format("YYYY");
+        return props.val.format("YYYY");
     }
 
     function nextMonth(){
-        return val.clone().add(1,"month");
+        return props.val.clone().add(1,"month");
     }
 
     function prevMonth(){
-        return val.clone().subtract(1,"month");
+        return props.val.clone().subtract(1,"month");
     }
-
+    function handleNext(){
+        if(viewType=="month")
+        {
+            props.setVal(nextMonth());
+        }
+        else if(viewType=="week")
+        {
+            props.setVal(props.val.clone().add(1,"week"));
+        }
+        
+    }
+    function handlePrev(){
+        if(viewType=="month")
+        {
+            props.setVal(prevMonth());
+        }
+        else if(viewType=="week")
+        {
+            props.setVal(props.val.clone().subtract(1,"week"));
+        }
+    }
+    var weeklyTime = Array(24).fill(null).map(() => Array(8));
+    for(var i=0;i<24;i++)
+    {
+        for(var j=0;j<8;j++)
+        {
+            weeklyTime[i][j] = "";
+        }
+        if(i<10)
+        {
+            weeklyTime[i][0] = "0"+i+":00";
+        }
+        else
+        {
+            weeklyTime[i][0] = i+":00";
+        }
+    }
     return (
         <div className="calendar">
             <div className="header">
-                <div>
-                    <div className="navigation" onClick={() => setVal(prevMonth())}>
+                <div style={{paddingTop:"20px"}}>
+                    <div className="navigation" onClick={() => handlePrev()}>
                         <NavigateBeforeIcon />
                     </div>
-                    <div className="navigation" onClick={()=> setVal(nextMonth())}>
+                    <div className="navigation" onClick={()=> handleNext()}>
                         <NavigateNextIcon />
                     </div>
                 </div>
-                <div className="current">
+                <div className="current" style={{paddingTop:"25px"}}>
                     {curMonth()} {curYear()}
                 </div>
                 <div>
-                    <Button variant="contained" color="primary">View</Button>
+                    <ControlledOpenSelect 
+                        viewType = {viewType}
+                        setviewType = {setviewType}
+                    />
                 </div>
             </div>
+            {viewType==="week" ?
+            (<div className="time-body">
+            <div className="time-column">
             <div className="body">
+                <div className="day-names">
+                    {["Time","SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"].map((d) => {
+                        if(d==="SAT" || d==="SUN"){
+                            return (<div className="weekly-week" style={{color:"red"}}>{d}</div>);
+                        }
+                        else if(d=="Time"){
+                            return (<div className="time-week">time</div>);
+                        }
+                        return (<div className="weekly-week">{d}</div>);
+                    })}
+                </div>
+                {calendar.map((week) => (
+                    <div>
+                    <div style={{display:"flex", marginLeft:"5.5%"}}>
+                        {week.map((day) => (
+                            <div className="day" onClick={() => props.setVal(day)}>
+                                <div className={dayStyles(day)}>{day.format("D")}</div>
+                            </div>
+                        ))}
+                    </div>
+                    <div className="time-matrix" style={{display:"flex"}}>
+                        {weeklyTime.map((timeRow) => (
+                            <div style={{display:"flex"}}>
+                                {timeRow.map((timeEvent,index) => (
+                                    index !== 0 ? 
+                                        <div className="timeStampMain timeStamp" style={{display:"flex", alignItems:"center", justifyContent:"center"}}>
+                                    {timeEvent}
+                                </div>
+                                        :
+                                    <div className="timeStamp" style={{display:"flex", alignItems:"center", justifyContent:"center"}}>
+                                        <div>
+                                        {timeEvent}
+                                        </div>
+                                    </div>
+                                    
+                                ))}
+                            </div>
+                        ))}
+
+                    </div>
+                    </div>
+
+                ))}
+            </div>
+            </div>
+        </div>)
+         : 
+            (<div className="body">
                 <div className="day-names">
                     {["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"].map((d) => {
                         if(d==="SAT" || d==="SUN"){
@@ -87,13 +181,14 @@ function Calendar() {
                 {calendar.map((week) => (
                     <div style={{display:"flex"}}>
                         {week.map((day) => (
-                            <div className="day" onClick={() => setVal(day)}>
+                            <div className="day" onClick={() => props.setVal(day)}>
                                 <div className={dayStyles(day)}>{day.format("D")}</div>
                             </div>
                         ))}
                     </div>
                 ))}
-            </div>
+            </div>)
+            }
         </div>
     );
 }

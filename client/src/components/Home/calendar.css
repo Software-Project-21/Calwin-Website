@@ -51,7 +51,6 @@
 /* .calendar .header .previous {
     
 }
-
 .calendar .header .next {
     flex: 1;
     text-align: right;
@@ -75,7 +74,41 @@
     width: calc(100% / 7);
 }
 
-.calendar .day {
+.calendar .time-week {
+    background-color: white;
+    width: 5.5%;
+    height: 44px;
+    line-height: 44px;
+    text-align: center;
+    text-transform: uppercase;
+    color: black;
+    font-weight: 400;
+    border: #dadce0 1px solid;
+    /* display: flex; */
+}
+
+.calendar .time-week div {
+    width: 5.5%;
+}
+
+.calendar .weekly-week {
+    background-color: white;
+    width: calc(94.5%/7);
+    height: 44px;
+    line-height: 44px;
+    text-align: center;
+    text-transform: uppercase;
+    color: black;
+    font-weight: 400;
+    border: #dadce0 1px solid;
+    /* display: flex; */
+}
+
+.calendar .weekly-week div {
+    width: calc(94.5%/7);
+}
+
+.day {
     text-align: center;
     position: relative;
     width: calc(100% / 7);
@@ -93,7 +126,7 @@
     cursor: pointer;
 }
 
-.calendar .day div {
+.day div {
     text-align: center;
     width: calc(100% / 7);
     height: 40px;
@@ -105,6 +138,14 @@
     border-radius: 98% 95%;
     padding: auto 5px;
 }
+
+/* .calendar .weekly-day {
+    width: calc(94.5% / 7);
+}
+
+.calendar .weekly-day div {
+    width: calc(100% / 7);
+} */
 
 .calendar .day div.before {
     color: grey;
@@ -118,4 +159,24 @@
 
 .calendar .day div.today {
     background-color: grey;
+}
+
+.time-matrix{
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+}
+
+.timeStamp{
+    width: 5.5%;
+    border: #dadce0 1px solid;
+    height: 50px;
+}
+
+.timeStampMain{
+    width: calc(94.5%/7);
+}
+
+.calendar .header .viewDropdown{
+    display: block;
 }

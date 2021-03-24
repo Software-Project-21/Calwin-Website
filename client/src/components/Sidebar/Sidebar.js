@@ -8,6 +8,8 @@ import IconButton from '@material-ui/core/IconButton';
 import { MdFingerprint } from 'react-icons/md';
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import "./sidebar.css";
+import TodayIcon from '@material-ui/icons/Today';
+import moment from 'moment';
 
 const drawerWidth = 240;
 
@@ -46,7 +48,8 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function Sidebar() {
+
+export default function Sidebar(props) {
   const classes = useStyles();
   const theme = useTheme();
 
@@ -64,8 +67,8 @@ export default function Sidebar() {
           </IconButton>
         </div>
         <List className="list">
-          <ListItem button className="list-item">
-            <CalendarTodayIcon/>
+          <ListItem button className="list-item" onClick={() => props.setVal(moment())}>
+            <TodayIcon/>
           </ListItem>
           <ListItem button className="list-item">
             <CalendarTodayIcon/>

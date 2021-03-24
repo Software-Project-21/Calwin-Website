@@ -1,0 +1,7 @@
+.time-body{
+    display: flex;
+    width: 100%;
+}
+.time-column{
+    display: flex;
+}
