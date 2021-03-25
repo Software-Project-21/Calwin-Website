@@ -2,6 +2,8 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const authMiddleware = require("./Middleware/auth");
 const cors = require('cors');
+// const https = require("https");
+const axios = require("axios");
 // const {firebase,admin} = require("./firebase/admin");
 
 const app = express();
@@ -19,17 +21,7 @@ app.use(
   })
 );
 
-// const saveUser = require("./routes/saveUser");
-
-
 app.use("/",authMiddleware);
-
-// app.use("/users",saveUser);
-
-// const googleAuth = require('./routes/googleAuth');
-
-
-// app.use("/auth/google",googleAuth);
 
 app.listen(port, function(){
     console.log("Server started locally at port 5000");

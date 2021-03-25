@@ -9,7 +9,10 @@ import { MdFingerprint } from 'react-icons/md';
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import "./sidebar.css";
 import TodayIcon from '@material-ui/icons/Today';
+import EventNoteIcon from '@material-ui/icons/EventNote';
 import moment from 'moment';
+import { Redirect, useHistory } from "react-router";
+import {useAuth} from "../Auth/AuthContext";
 
 const drawerWidth = 240;
 
@@ -52,6 +55,8 @@ const useStyles = makeStyles((theme) => ({
 export default function Sidebar(props) {
   const classes = useStyles();
   const theme = useTheme();
+  const history = useHistory();
+  const {currentUser} = useAuth();
 
   return (
     <div className={classes.root}>
@@ -70,11 +75,11 @@ export default function Sidebar(props) {
           <ListItem button className="list-item" onClick={() => props.setVal(moment())}>
             <TodayIcon/>
           </ListItem>
-          <ListItem button className="list-item">
-            <CalendarTodayIcon/>
+          <ListItem button className="list-item" onClick={() => history.push("/events")}>
+            <EventNoteIcon/>
           </ListItem>
           <ListItem button className="list-item">
-            <CalendarTodayIcon/>
+            <CalendarTodayIcon onClick={() => history.push(`/calendar/${currentUser.providerData[0].uid}`)}/>
           </ListItem>
         </List>
       </Drawer>

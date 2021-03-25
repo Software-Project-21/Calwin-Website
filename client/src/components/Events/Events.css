@@ -1,0 +1,15 @@
+.event-list{
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(255, 255, 255, 0.25);
+}
+
+.content:hover {
+    /* background-color: red; */
+        background-color: #c3d1e8;
+}
+.content{
+    padding: 2px;
+    border-radius: 20px;
+    padding-left: 10px;
+}
