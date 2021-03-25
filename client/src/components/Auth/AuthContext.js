@@ -21,7 +21,6 @@ export function isLoggedIn() {
 export function AuthProvider({children}){
     const [currentUser,setCurrentUser] = useState();
     const [loading,setLoading] = useState(true);
-    const [user,setUser] = useState({});
     const history = useHistory();
 
     async function googleLogin(){
@@ -36,15 +35,9 @@ export function AuthProvider({children}){
             //5 - put the token at localStorage (We'll use this to make requests)
             localStorage.setItem("@token", token);
             //6 - navigate user to the book list
-            history.push("/calendar");
+            history.push("/calendar/"+result.user.providerData[0].uid);
             }
             var usr = result.user;
-            const tmpuser = {
-                name: usr.displayName,
-                email: usr.email,
-                photoUrl: usr.photoURL
-            }
-            setUser(tmpuser);
             console.log(usr);
         },
         function (err) {

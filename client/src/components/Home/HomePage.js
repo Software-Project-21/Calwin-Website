@@ -7,6 +7,7 @@ import { Redirect } from 'react-router';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import AddEvent from '../Events/AddEvent';
 import moment from 'moment';
+import Events from  "./Events";
 
 export default function HomePage() {
     const {currentUser} = useAuth();
@@ -30,7 +31,9 @@ export default function HomePage() {
                     <Calendar
                         val={val}
                         setVal={setVal}
+                        // show={true}
                     />
+                    {/* <Events/> */}
                 </div>
                 {/* <AddCircleIcon onClick={() => handleAddEvent('paper')}/>     */}
                 <AddEvent open={open} setOpen={setOpen} scroll={scroll} setScroll={setScroll}/>
