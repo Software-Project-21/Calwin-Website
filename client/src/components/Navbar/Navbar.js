@@ -92,6 +92,15 @@ function Navbar() {
                   Gallery
                 </Link>
               </li>
+              <li className='nav-item'>
+              {currentUser &&
+                (<Link
+                  to={`/calendar/${currentUser.providerData[0].uid}`}
+                  className='nav-links'
+                  onClick={closeMobileMenu}
+                >Calendar</Link>) 
+              }
+              </li>
               <li className='nav-btn'>
                 {button ? (
                   !currentUser ? (

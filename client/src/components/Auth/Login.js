@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {ReactComponent as GoogleIcon} from '../googleIcon.svg';
 import {useAuth} from './AuthContext';
 import Button from '@material-ui/core/Button';
-import './Login.css'
+import './Login.css';
 import Navbar from '../Navbar/Navbar';
 import Footer from '../pages/Footer.js/Footer';
 

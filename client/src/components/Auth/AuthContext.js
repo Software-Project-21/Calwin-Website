@@ -2,6 +2,7 @@ import React, { useContext, useState,useEffect} from 'react';
 import { auth} from "../../firbase";
 import firebase from "../../firbase";
 import { useHistory } from 'react-router';
+const db = firebase.firestore();
 
 const AuthContext = React.createContext();
 
@@ -35,7 +36,7 @@ export function AuthProvider({children}){
             //5 - put the token at localStorage (We'll use this to make requests)
             localStorage.setItem("@token", token);
             //6 - navigate user to the book list
-            history.push("/calendar/"+result.user.providerData[0].uid);
+            history.push("/calendar/"+result.user.uid); 
             }
             var usr = result.user;
             console.log(usr);
@@ -51,7 +52,16 @@ export function AuthProvider({children}){
             // console.log(user);
             setCurrentUser(user);
             setLoading(false);
-        })
+            db.collection('users').doc(user.uid).set(({
+                name: user.displayName,
+                photoURL: user.photoURL,
+                email: user.email
+            }),{merge:true}).then(() => {
+                console.log("Document written successfully");
+            }).catch(err => {
+                console.error("Error: "+err);
+            })
+        });
         return unsubscribe;
     },[])
 

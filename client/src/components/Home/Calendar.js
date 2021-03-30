@@ -19,41 +19,11 @@ function Calendar(props) {
         setCalendar(buildCalendar(props.val,viewType));
         console.log(holidays);
     },[props.val,viewType,holidays]);
-    
-    // const [holidays,setHolidays] = useState([]);
-    // const [hol,setHol] = useState();
-    // const [year,setYear] = useState(2021);
-
-    // useEffect(() =>{
-    //     axios.defaults.withCredentials = false;
-    //     axios.get(`https://calendarific.com/api/v2/holidays?&api_key=b3f3b4fe3b8cc3e33dd71484fa52cd88bf7cff0d&country=in&year=${year}`)
-    //     .then(res => res.data)
-    //     .then(data =>{
-    //         // setHolidays(data.response.holidays);
-    //         // console.log(data.response.holidays);
-    //         // const tmp = data.response.holidays;
-    //         // console.log(tmp);
-    //         setHolidays(data.response.holidays);
-    //         // console.log(holidays);
-    //     }).catch(err =>{
-    //         console.log(err);
-    //     })
-    // },[year,setHolidays])
-
-
-
-    // useEffect(() => {
-    //     if(props.val.clone().year()!==year){
-    //         console.log(year);
-    //         setYear(props.val.clone().year());
-    //         console.log(props.val.clone().year());
-    //     }
-    // },[props.val,year]);
 
     function isSelected(day){
         return props.val.isSame(day,"day");
     }
-        // console.log(setHolidays);
+
     function checkMonth(day){
         const startMon = props.val.clone().startOf("month");
         const endMon = props.val.clone().endOf("month");
@@ -127,7 +97,7 @@ function Calendar(props) {
             weeklyTime[i][0] = i+":00";
         }
     }
-    // changeHolidays("bye");
+
     return (
         <div className="calendar">
         <div className="header">
@@ -158,7 +128,7 @@ function Calendar(props) {
                     if(d==="SAT" || d==="SUN"){
                         return (<div className="weekly-week" style={{color:"red"}}>{d}</div>);
                     }
-                    else if(d=="Time"){
+                    else if(d==="Time"){
                         return (<div className="time-week">time</div>);
                     }
                     return (<div className="weekly-week">{d}</div>);
@@ -170,6 +140,15 @@ function Calendar(props) {
                     {week.map((day) => (
                         <div className="day" onClick={() => props.setVal(day)}>
                             <div className={dayStyles(day)}>{day.format("D")}</div>
+                            {holidays.map((holiday) => {
+                                const dayH = holiday.date.datetime.day;
+                                const monthH = holiday.date.datetime.month;
+                                const month = day.format("M");
+                                const curDay = day.format("D");
+                                if(month==monthH && curDay==dayH){
+                                    return <div className="holiday-display">{holiday.name}</div>
+                                } 
+                            })}
                         </div>
                     ))}
                 </div>
@@ -213,7 +192,16 @@ function Calendar(props) {
                 <div style={{display:"flex"}}>
                     {week.map((day) => (
                         <div className="day" onClick={() => props.setVal(day)}>
-                            <div className={dayStyles(day)}>{day.format("D")}</div>
+                            <div className={dayStyles(day)}>{day.format("D")}</div>     
+                            {holidays.map((holiday) => {
+                                const dayH = holiday.date.datetime.day;
+                                const monthH = holiday.date.datetime.month;
+                                const month = day.format("M");
+                                const curDay = day.format("D");
+                                if(month==monthH && curDay==dayH){
+                                    return <div className="holiday-display">{holiday.name}</div>
+                                } 
+                            })}
                         </div>
                     ))}
                 </div>
