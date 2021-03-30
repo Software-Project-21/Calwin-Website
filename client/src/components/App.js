@@ -11,26 +11,31 @@ import {
   Redirect
 } from "react-router-dom";
 
-import axios from 'axios';
+// import axios from 'axios';
 import Login from './Auth/Login';
 import HomePage from './Home/HomePage';
 import { AuthProvider} from './Auth/AuthContext';
 import HolidayContext from './Home/HolidayContext';
-axios.defaults.withCredentials = true;
+import moment from 'moment';
+// axios.defaults.withCredentials = true;
  
 function App() {
+
+  const [val,setVal] = useState(moment());
 
   return (
 
     <Router>
-        <HolidayContext>
+        <HolidayContext val={val}>
     <AuthProvider>
         <Switch>
           <Route path='/' exact component={Home} />
           <Route path="/events" component={Events} />
           <Route path='/services' component={Services} />
           <Route path='/sign-up' component={Login} />
-          <Route path='/calendar/:uid' component={HomePage} />
+          <Route path='/calendar/:uid' 
+            render={(props) => <HomePage val={val} setVal={setVal} {...props} />}
+          />
           <Route path="/login" component={Login}/>
         </Switch>
         </AuthProvider>

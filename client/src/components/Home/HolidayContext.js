@@ -9,7 +9,8 @@ export default function HolidayContext(props) {
 
     useEffect(() =>{
         axios.defaults.withCredentials = false;
-        axios.get(`https://calendarific.com/api/v2/holidays?&api_key=2438b3df4351ba9314c1b43e50a90454c591406d&country=in&year=2021`)
+        
+        axios.get(`https://calendarific.com/api/v2/holidays?&api_key=2438b3df4351ba9314c1b43e50a90454c591406d&country=in&year=${props.val.clone().format('YYYY')}`)
         .then(res => res.data)
         .then(data =>{
             let val = data.response.holidays;
@@ -21,7 +22,7 @@ export default function HolidayContext(props) {
         }).catch(err =>{
             console.log(err);
         })
-    },[])
+    },[props.val])
     const  value = {
         holidays
     }

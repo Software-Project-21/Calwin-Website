@@ -129,13 +129,11 @@
 .day div {
     text-align: center;
     width: calc(100% / 7);
-    height: 40px;
-    width: 40px;
     position: relative;
     color: black;
     z-index: 100;
-    line-height: 44px;
-    border-radius: 98% 95%;
+    border-radius: 100%;
+    padding: 2px;
     padding: auto 5px;
 }
 
@@ -179,4 +177,11 @@
 
 .calendar .header .viewDropdown{
     display: block;
+}
+
+.calendar .day .holiday-display{
+    font-size: 0.75rem;
+    width: 100%;
+    max-height: 12px;
+    margin-bottom: 2px;
 }

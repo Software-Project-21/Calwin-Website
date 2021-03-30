@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -7,7 +7,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import DatePicker from './DatePicker';
-
+import TimePicker from "./TimePicker";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,12 +22,11 @@ const useStyles = makeStyles((theme) => ({
 function AddEvent(props) {
     
     const classes = useStyles();
-    // const [open, setOpen] = React.useState(false);
-
-    // const handleClickOpen = (scrollType) => () => {
-    //     setOpen(true);
-    //     setScroll(scrollType);
-    // };
+    // const [title,setTitle] = useState("");
+    // const [desc,setDesc] = useState("");
+    // const [selectedDate, setSelectedDate] = useState(new Date());
+    // const [startTime,setStartTime] = useState(new Date());
+    // const [endTime,setzEndTime] = useState(new Date());  
 
     const handleClose = () => {
         props.setOpen(false);
@@ -42,6 +41,10 @@ function AddEvent(props) {
         }
         }
     }, [props.open]);
+
+    // function handleTitle(e){
+    //     setTitle(e.target.value);
+    // }
 
     return (
         <div>
@@ -58,7 +61,7 @@ function AddEvent(props) {
                     <TextField required id="standard-basic" placeholder="Title" />
                     <TextField
                         id="standard-basic"
-                        placeholder="Description ( Max 100 letters )"
+                        placeholder="Description"
                         multiline
                         // rows={4}
                         // variant="outlined"
@@ -70,6 +73,7 @@ function AddEvent(props) {
                         // style={{margin: "2% 0"}}
                     />
                     <DatePicker/>
+                    <TimePicker/>
                 </form>
             </DialogContent>
             <DialogActions>

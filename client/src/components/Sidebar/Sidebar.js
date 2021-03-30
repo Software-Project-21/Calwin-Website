@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
@@ -11,8 +11,10 @@ import "./sidebar.css";
 import TodayIcon from '@material-ui/icons/Today';
 import EventNoteIcon from '@material-ui/icons/EventNote';
 import moment from 'moment';
-import { Redirect, useHistory } from "react-router";
+import { useHistory } from "react-router";
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 import {useAuth} from "../Auth/AuthContext";
+import AddEvent from "../Events/AddEvent";
 
 const drawerWidth = 240;
 
@@ -57,6 +59,12 @@ export default function Sidebar(props) {
   const theme = useTheme();
   const history = useHistory();
   const {currentUser} = useAuth();
+  const [open,setOpen] = useState(false);
+  const [scroll, setScroll] = React.useState('paper');
+  function handleAddEvent(scrollType){
+      setOpen(true);
+      setScroll(scrollType);
+  }
 
   return (
     <div className={classes.root}>
@@ -68,7 +76,7 @@ export default function Sidebar(props) {
       >
         <div className={classes.toolbar}>
           <IconButton >
-            <MdFingerprint className='icon'/>
+            <MdFingerprint className='icon' onClick={() => history.push('/')}/>
           </IconButton>
         </div>
         <List className="list">
@@ -81,8 +89,12 @@ export default function Sidebar(props) {
           <ListItem button className="list-item">
             <CalendarTodayIcon onClick={() => history.push(`/calendar/${currentUser.providerData[0].uid}`)}/>
           </ListItem>
+          <ListItem>
+            <AddCircleIcon onClick={() => handleAddEvent('paper')}/>
+          </ListItem>
         </List>
       </Drawer>
+      <AddEvent open={open} setOpen={setOpen} scroll={scroll} setScroll={setScroll}/>
     </div>
   );
 }
