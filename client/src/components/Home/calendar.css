@@ -160,19 +160,19 @@
 }
 
 .time-matrix{
-    display: flex;
-    flex-direction: column;
+    /* display: flex; */
     background-color: #ffffff;
+    margin-top: -2px;
 }
 
 .timeStamp{
-    width: 5.5%;
+    /* width: 5.5%; */
     border: #dadce0 1px solid;
     height: 50px;
 }
 
 .timeStampMain{
-    width: calc(94.5%/7);
+    width: calc(100%/7);
 }
 
 .calendar .header .viewDropdown{

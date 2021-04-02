@@ -67,6 +67,17 @@ function Events() {
         setEvents(events.filter(eve => eve.id!==event.id));
     }
 
+    function formatAMPM(date) {
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var ampm = hours >= 12 ? 'pm' : 'am';
+        hours = hours % 12;
+        hours = hours ? hours : 12; // the hour '0' should be '12'
+        minutes = minutes < 10 ? '0'+minutes : minutes;
+        var strTime = hours + ':' + minutes + ' ' + ampm;
+        return strTime;
+    }
+
     useEffect(() => {
         db.collection("users").doc(currentUser.uid).onSnapshot((doc) => {
             if(doc.exists){
@@ -150,7 +161,8 @@ function Events() {
                                         <div style={{display:"inline-block",width:"20%"}}>
                                             <div style={{height:"10px",width:"10px",borderRadius:"100%",backgroundColor:"rgb(3, 155, 229)",margin:"5px 5px 0 0",display:"inline-block"}}>
                                             </div>
-                                            <div style={{display:"inline-block"}}>{`${event.startTime.toDate().toLocaleTimeString().split(" ")[0].substr(0,4)} ${event.startTime.toDate().toLocaleTimeString().split(" ")[1]}-${event.endTime.toDate().toLocaleTimeString().split(" ")[0].substr(0,4)} ${event.endTime.toDate().toLocaleTimeString().split(" ")[1]}`}</div>
+                                            {/* <div style={{display:"inline-block"}}>{`${event.startTime.toDate().toLocaleTimeString().split(" ")[0].substr(0,5)} ${event.startTime.toDate().toLocaleTimeString().split(" ")[1]}-${event.endTime.toDate().toLocaleTimeString().split(" ")[0].substr(0,5)} ${event.endTime.toDate().toLocaleTimeString().split(" ")[1]}`}</div> */}
+                                            <div style={{display:"inline-block"}}>{`${formatAMPM(event.startTime.toDate())} - ${formatAMPM(event.endTime.toDate())}`}</div>
                                         </div>
                                         <div style={{display:"inline-block",width:"70%"}}>
                                             {event.title}

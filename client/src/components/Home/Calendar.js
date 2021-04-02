@@ -100,85 +100,90 @@ function Calendar(props) {
 
     return (
         <div className="calendar">
-        <div className="header">
-            <div style={{paddingTop:"20px"}}>
-                <div className="navigation" onClick={() => handlePrev()}>
-                    <NavigateBeforeIcon />
+            <div className="header">
+                <div style={{paddingTop:"20px"}}>
+                    <div className="navigation" onClick={() => handlePrev()}>
+                        <NavigateBeforeIcon />
+                    </div>
+                    <div className="navigation" onClick={()=> handleNext()}>
+                        <NavigateNextIcon />
+                    </div>
                 </div>
-                <div className="navigation" onClick={()=> handleNext()}>
-                    <NavigateNextIcon />
+                <div className="current" style={{paddingTop:"25px"}}>
+                    {curMonth()} {curYear()}
                 </div>
-            </div>
-            <div className="current" style={{paddingTop:"25px"}}>
-                {curMonth()} {curYear()}
-            </div>
-            <div>
-                <ControlledOpenSelect 
-                    viewType = {viewType}
-                    setviewType = {setviewType}
-                />
-            </div>
-        </div>
-        {viewType==="week" ?
-        (<div className="time-body">
-        <div className="time-column">
-        <div className="body">
-            <div className="day-names">
-                {["Time","SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"].map((d) => {
-                    if(d==="SAT" || d==="SUN"){
-                        return (<div className="weekly-week" style={{color:"red"}}>{d}</div>);
-                    }
-                    else if(d==="Time"){
-                        return (<div className="time-week">time</div>);
-                    }
-                    return (<div className="weekly-week">{d}</div>);
-                })}
-            </div>
-            {calendar.map((week) => (
                 <div>
-                <div style={{display:"flex", marginLeft:"5.5%"}}>
-                    {week.map((day) => (
-                        <div className="day" onClick={() => props.setVal(day)}>
-                            <div className={dayStyles(day)}>{day.format("D")}</div>
-                            {holidays.map((holiday) => {
-                                const dayH = holiday.date.datetime.day;
-                                const monthH = holiday.date.datetime.month;
-                                const month = day.format("M");
-                                const curDay = day.format("D");
-                                if(month==monthH && curDay==dayH){
-                                    return <div className="holiday-display">{holiday.name}</div>
-                                } 
+                    <ControlledOpenSelect 
+                        viewType = {viewType}
+                        setviewType = {setviewType}
+                    />
+                </div>
+            </div>
+            {viewType==="week" ?
+            (<div className="time-body">
+                <div className="time-column">
+                    <div className="body">
+                        <div className="day-names">
+                            {["Time","SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"].map((d) => {
+                                if(d==="SAT" || d==="SUN"){
+                                    return (<div className="weekly-week" style={{color:"red"}}>{d}</div>);
+                                }
+                                else if(d==="Time"){
+                                    return (<div className="time-week">time</div>);
+                                }
+                                return (<div className="weekly-week">{d}</div>);
                             })}
                         </div>
-                    ))}
-                </div>
-                <div className="time-matrix" style={{display:"flex"}}>
-                    {weeklyTime.map((timeRow) => (
-                        <div style={{display:"flex"}}>
-                            {timeRow.map((timeEvent,index) => (
-                                index !== 0 ? 
-                                    <div className="timeStampMain timeStamp" style={{display:"flex", alignItems:"center", justifyContent:"center"}}>
-                                {timeEvent}
-                            </div>
-                                    :
-                                <div className="timeStamp" style={{display:"flex", alignItems:"center", justifyContent:"center"}}>
-                                    <div>
-                                    {timeEvent}
-                                    </div>
+                {calendar.map((week) => (
+                    <div>
+                        <div style={{display:"flex", marginLeft:"5.5%"}}>
+                            {week.map((day) => (
+                                <div className="day" onClick={() => props.setVal(day)}>
+                                    <div className={dayStyles(day)}>{day.format("D")}</div>
+                                    {holidays.map((holiday) => {
+                                        const dayH = holiday.date.datetime.day;
+                                        const monthH = holiday.date.datetime.month;
+                                        const month = day.format("M");
+                                        const curDay = day.format("D");
+                                        if(month==monthH && curDay==dayH){
+                                            return <div className="holiday-display">{holiday.name}</div>
+                                        } 
+                                    })}
                                 </div>
-                                
                             ))}
                         </div>
-                    ))}
+                        <div className="time-matrix">
+                            <div style={{width:"5.5%",marginTop:"-15px",position:"relative",top:"-3.75%",display:"inline-block"}}>
+                                {weeklyTime.map((timeRow) => (
+                                    <div style={{textAlign:"center",height:"50px"}}>
+                                        {timeRow[0]}
+                                    </div>
+                                ))}
+                                <div style={{textAlign:"center",height:"50px"}}>
+                                        00:00
+                                    </div>
+                            </div>
+                            <div style={{display:"inline-block",width:"94.5%"}}>
+                                {weeklyTime.map((timeRow) => (
+                                    <div style={{display:"flex"}}>
+                                        {timeRow.map((timeEvent,index) => (
+                                            index !== 0 &&
+                                            <div className="timeStampMain timeStamp" style={{display:"flex", alignItems:"center", justifyContent:"center"}}>
+                                                {timeEvent}
+                                            </div>
+                                            
+                                        ))}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
 
-                </div>
-                </div>
-
-            ))}
-        </div>
-        </div>
-    </div>)
-    : 
+                ))}
+            </div>
+            </div>
+        </div>)
+        : 
         (<div className="body">
             <div className="day-names">
                 {["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"].map((d) => {
