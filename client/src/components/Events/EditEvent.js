@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -10,7 +10,6 @@ import DatePicker from './DatePicker';
 import TimePicker from "./TimePicker";
 import firebase from '../../firbase';
 import { useAuth } from '../Auth/AuthContext';
-import nextId from "react-id-generator";
 
 const db = firebase.firestore();
 
@@ -24,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-function AddEvent(props) {
+function EditEvent(props) {
     
     const classes = useStyles();
     const [title,setTitle] = useState("");
@@ -35,23 +34,36 @@ function AddEvent(props) {
     const {currentUser} = useAuth();
 
     const handleClose = () => {
-        props.setOpen(false);
+        props.setEdit(false);
         clear();
     };
 
     const handleSubmit = () => {
         const eve = {
-            id: nextId(),
+            id: props.eventId,
             title: title,
             description: desc,
             eventDay : firebase.firestore.Timestamp.fromDate(selectedDate),
             startTime: firebase.firestore.Timestamp.fromDate(startTime),
             endTime: firebase.firestore.Timestamp.fromDate(endTime)
         }
-        db.collection('users').doc(currentUser.uid).update({
-            events: firebase.firestore.FieldValue.arrayUnion(eve)
+        const newEvents = [...props.events];
+        const id = props.eventId;
+        // console.log(id);
+        var ind = -1;
+        newEvents.forEach((el,index) => {
+            if(el.id===id){
+                ind = index;
+            }
         });
-        props.setOpen(false);
+        newEvents[ind] = eve;
+        console.log(newEvents);
+        db.collection("users").doc(currentUser.uid).update({
+            events: newEvents
+        });
+        props.setEvents(newEvents);
+        props.setEdit(false);
+        props.setEventId("");
         clear();
     } 
 
@@ -83,10 +95,32 @@ function AddEvent(props) {
             setDesc(val);
     }
 
+    useEffect(() => {
+        var id = props.eventId;
+        if(id!==""){
+            db.collection("users").doc(currentUser.uid).get().then((doc) => {
+                if(doc.exists){
+                    doc.data().events.forEach(el => {
+                        console.log(el);
+                        console.log(id);
+                        if(el.id===id){
+                            // const data = el.data();
+                            setTitle(el.title);
+                            setDesc(el.description);
+                            setSelectedDate(el.eventDay.toDate());
+                            setStartTime(el.startTime.toDate());
+                            setEndTime(el.endTime.toDate());
+                        }
+                    });
+                }
+            })
+        }
+    },[props.eventId,currentUser])
+
     return (
         <div>
             <Dialog
-            open={props.open}
+            open={props.edit}
             onClose={handleClose}
             scroll={props.scroll}
             aria-labelledby="scroll-dialog-title"
@@ -125,4 +159,4 @@ function AddEvent(props) {
     );
 }
 
-export default AddEvent;
+export default EditEvent;

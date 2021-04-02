@@ -86,11 +86,11 @@ export default function Sidebar(props) {
           <ListItem button className="list-item" onClick={() => history.push("/events")}>
             <EventNoteIcon/>
           </ListItem>
-          <ListItem button className="list-item">
-            <CalendarTodayIcon onClick={() => history.push(`/calendar/${currentUser.providerData[0].uid}`)}/>
+          <ListItem button className="list-item" onClick={() => history.push(`/calendar/${currentUser.providerData[0].uid}`)}>
+            <CalendarTodayIcon />
           </ListItem>
-          <ListItem>
-            <AddCircleIcon onClick={() => handleAddEvent('paper')}/>
+          <ListItem button className="list-item" onClick={() => handleAddEvent('paper')}>
+            <AddCircleIcon/>
           </ListItem>
         </List>
       </Drawer>

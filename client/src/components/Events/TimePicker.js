@@ -8,47 +8,26 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 
-export default function TimePicker() {
+export default function TimePicker(props) {
   // The first commit of Material-UI
-  const [selectedDate, setSelectedDate] = React.useState(new Date());
 
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
+  const handleDateChangeS = (date) => {
+    props.setStartTime(date);
+  };
+
+  const handleDateChangeE = (date) => {
+    props.setEndTime(date);
   };
 
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       {/* <Grid container justify="space-around"> */}
-        {/* <KeyboardDatePicker
-          disableToolbar
-          variant="inline"
-          format="MM/dd/yyyy"
-          margin="normal"
-          id="date-picker-inline"
-          label="Date picker inline"
-          value={selectedDate}
-          onChange={handleDateChange}
-          KeyboardButtonProps={{
-            'aria-label': 'change date',
-          }}
-        />
-        <KeyboardDatePicker
-          margin="normal"
-          id="date-picker-dialog"
-          label="Date picker dialog"
-          format="MM/dd/yyyy"
-          value={selectedDate}
-          onChange={handleDateChange}
-          KeyboardButtonProps={{
-            'aria-label': 'change date',
-          }}
-        /> */}
         <KeyboardTimePicker
           margin="normal"
           id="time-picker"
           label="Start Time"
-          value={selectedDate}
-          onChange={handleDateChange}
+          value={props.startTime}
+          onChange={handleDateChangeS}
           KeyboardButtonProps={{
             'aria-label': 'change time',
           }}
@@ -57,8 +36,8 @@ export default function TimePicker() {
           margin="normal"
           id="time-picker"
           label="End Time"
-          value={selectedDate}
-          onChange={handleDateChange}
+          value={props.endTime}
+          onChange={handleDateChangeE}
           KeyboardButtonProps={{
             'aria-label': 'change time',
           }}
