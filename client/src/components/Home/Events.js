@@ -5,10 +5,24 @@ import moment from "moment";
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import SearchBar from './SearchBar';
 import Sidebar from '../Sidebar/Sidebar';
+import "./events.css";
+import firebase from "../../firbase";
+import { useAuth } from '../Auth/AuthContext';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import EditEvent from '../Events/EditEvent';
+
+const db = firebase.firestore();
 
 function Events() {
     // console.log(HolidaysContext);
     const {holidays} = useContext(HolidaysContext);
+    const [publicEve,setPublicEve] = useState(true);
+    const {currentUser} = useAuth();
+    const [events,setEvents] = useState([]);
+    const [eventId,setEventId] = useState("");
+    const [edit,setEdit] = useState(false);
     // console.log(holidays);
     
     const [expand,setExpand] = useState([]);
@@ -28,6 +42,40 @@ function Events() {
         setExpand(newArr);
     }
 
+    function showPublic(e) {
+        setPublicEve(true);
+        e.target.classList.add("selectedList");
+        document.getElementById("own").classList.remove("selectedList");
+    }
+
+    function showOwn(e) {
+        setPublicEve(false);
+        e.target.classList.add("selectedList");
+        document.getElementById("public").classList.remove("selectedList");
+    }
+
+    function handleEdit(event) {
+        setEdit(true);
+        setEventId(event.id);
+    }
+
+    function handleDelete(event) {
+
+        db.collection("users").doc(currentUser.uid).update({
+            events: events.filter(eve => eve.id!==event.id)
+        })
+        setEvents(events.filter(eve => eve.id!==event.id));
+    }
+
+    useEffect(() => {
+        db.collection("users").doc(currentUser.uid).onSnapshot((doc) => {
+            if(doc.exists){
+                // console.log(doc.data());
+                setEvents(doc.data().events);
+            }
+        });
+    },[currentUser])
+
     return (
         <>
         
@@ -37,8 +85,16 @@ function Events() {
             />
             <div style={{width:"100%"}} >
                 <SearchBar/>
-                <div className="event-list">
-                {/* <div style={{padding:"2%"}}> */}
+                <div style={{display: "block"}}>
+                    <div id="public" className="public selectedList" onClick={showPublic} style={{fontSize:"20px",padding:"3px",display:"inline-block",width:"50%",textAlign:"center"}}>
+                        Public Holidays
+                    </div>
+                    <div id="own" className="own" onClick={showOwn} style={{fontSize:"20px",padding:"3px",display:"inline-block",width:"50%",textAlign:"center"}}>
+                        Your Events
+                    </div>
+                </div>
+                {publicEve ? 
+                    (<div className="event-list">
                     {holidays.map((holiday,index) => (
                         <div style={{padding:"1%",display:"flex",border:"#dadce0 1px solid"}}>
                             <div style={{display:"flex",flexBasis:"10%"}}>
@@ -67,9 +123,6 @@ function Events() {
                                     <div>
                                         <div style={{padding:"20px",paddingLeft:"0"}}>
                                             <div>{holiday.description}</div>
-                                            <div style={{textAlign:"right"}}>
-                                                <ExpandLessIcon />
-                                            </div>
                                         </div>
                                     </div>
                                     ):<div></div>
@@ -77,10 +130,56 @@ function Events() {
                             </div>
                         </div>
                     ))}
-                {/* </div> */}
-            </div>
+                </div>) : (
+                    <div className="event-list">
+                        {events.length!==0 ? (events.map((event,index) => (
+                            <div style={{padding:"1%",display:"flex",border:"#dadce0 1px solid"}}>
+                                <div style={{display:"flex",flexBasis:"10%",paddingTop:"3px"}}>
+                                    <div style={{flexBasis:"25%",fontWeight:"700",fontSize:"1.1rem"}}>
+                                        {event.eventDay.toDate().getDate()}
+                                    </div>
+                                    <div style={{flexBasis:"30%",paddingTop:"3px"}}>
+                                        {event.eventDay.toDate().toLocaleString('default',{month: 'short'})}
+                                    </div>
+                                    <div style={{paddingTop:"3px"}}>
+                                    {event.eventDay.toDate().toLocaleString('default',{weekday: 'short'})}
+                                    </div>
+                                </div>
+                                <div className="content" style={{fontWeight:"600",width:"100%"}}>
+                                    <div>
+                                        <div style={{display:"inline-block",width:"20%"}}>
+                                            <div style={{height:"10px",width:"10px",borderRadius:"100%",backgroundColor:"rgb(3, 155, 229)",margin:"5px 5px 0 0",display:"inline-block"}}>
+                                            </div>
+                                            <div style={{display:"inline-block"}}>{`${event.startTime.toDate().toLocaleTimeString().split(" ")[0].substr(0,4)} ${event.startTime.toDate().toLocaleTimeString().split(" ")[1]}-${event.endTime.toDate().toLocaleTimeString().split(" ")[0].substr(0,4)} ${event.endTime.toDate().toLocaleTimeString().split(" ")[1]}`}</div>
+                                        </div>
+                                        <div style={{display:"inline-block",width:"70%"}}>
+                                            {event.title}
+                                        </div>
+                                        <div style={{display:"inline-block",width:"10%",textAlign:"right"}}>
+                                            <EditIcon fontSize="small" onClick={() => handleEdit(event)} style={{cursor:"pointer"}}/>
+                                            <DeleteIcon fontSize="small" onClick={() => handleDelete(event)} style={{marginLeft: "10px",cursor:"pointer"}}/>
+                                            <ExpandMoreIcon fontSize="small" onClick={() => handleExpand(index)} style={{marginLeft:"10px",marginRight:"10px",cursor:"pointer"}}/>
+                                        </div>
+                                    </div>
+                                    { expand[index] ? (
+                                        <div>
+                                            <div style={{padding:"20px",paddingLeft:"0"}}>
+                                                <div>{event.description==="" ? "No Description Provided" : event.description}</div>
+                                            </div>
+                                        </div>
+                                        ):<div></div>
+                                    }
+                                </div>
+                            </div>
+                        ))) : 
+                        <div>No Events to show</div>
+                        }
+                    </div>
+                )
+                }
             </div>
         </div>
+        {edit ? <EditEvent events={events} setEvents={setEvents} setEdit={setEdit} edit={edit} eventId={eventId} setEventId={setEventId} scroll='paper'/> : ""}
         </>
     );
 }

@@ -7,12 +7,12 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 
-function DatePicker() {
-
-    const [selectedDate, setSelectedDate] = React.useState(new Date());
+function DatePicker(props) {
 
     const handleDateChange = (date) => {
-        setSelectedDate(date);
+        props.setSelectedDate(date);
+        props.setStartTime(date);
+        props.setEndTime(date);
     };
 
     return (
@@ -26,7 +26,7 @@ function DatePicker() {
                     margin="normal"
                     id="date-picker-inline"
                     label="Date"
-                    value={selectedDate}
+                    value={props.selectedDate}
                     onChange={handleDateChange}
                     KeyboardButtonProps={{
                         'aria-label': 'change date',

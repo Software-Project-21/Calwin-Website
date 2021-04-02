@@ -13,6 +13,7 @@ import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import {useAuth} from "../Auth/AuthContext";
 import { Avatar, Typography } from "@material-ui/core";
+import { useHistory } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -97,6 +98,7 @@ export default function SearchBar() {
   const {logOut,currentUser}  = useAuth();
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  const history = useHistory();
   // console.log(holidays);
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -115,6 +117,11 @@ export default function SearchBar() {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const handleLogOut = () => {
+    logOut();
+    history.push("/");
+  }
+
   const menuId = "primary-search-account-menu";
   const renderMenu = (
     <Menu
@@ -126,7 +133,7 @@ export default function SearchBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={logOut}>Log Out</MenuItem>
+      <MenuItem onClick={handleLogOut}>Log Out</MenuItem>
       {/* <MenuItem onClick={handleMenuClose}>My account</MenuItem> */}
     </Menu>
   );
@@ -159,8 +166,8 @@ export default function SearchBar() {
           aria-haspopup="true"
           style={{borderRadius:"10%"}}
         >
-            <Avatar alt="profile pic" src={currentUser.photoURL}/>
-            <p style={{marginLeft:"2px",fontSize:"1rem"}}>{currentUser.displayName}</p>
+        <Avatar alt="profile pic" src={currentUser.photoURL}/>
+        <p style={{marginLeft:"2px",fontSize:"1rem"}}>{currentUser.displayName}</p>
         </IconButton>
       </MenuItem>
     </Menu>
