@@ -14,14 +14,13 @@ import EditEvent from '../Events/EditEvent';
 // import axios from "axios";
 require('dotenv').config();
 
-// const HolidaysContext = createContext();
 const db = firebase.firestore();
 
 function Calendar(props) {
 
     const [homeDisplay,setHomeDisplay] = useState([]);
     const [calendar,setCalendar] = useState([]);
-    const [viewType, setviewType] = React.useState("month");
+    const [viewType, setviewType] = useState("month");
     const {holidays} = useContext(HolidaysContext); 
     const [events,setEvents] = useState([]);
     const {currentUser} = useAuth();

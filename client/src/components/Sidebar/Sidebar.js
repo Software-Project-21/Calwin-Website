@@ -21,13 +21,15 @@ const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: "flex",
-    backgroundColor: "#6f51ed"
+    display: "flex"
+  },
+  paper: {
+    background: "#494DC4"
   },
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
-    whiteSpace: "nowrap"
+    whiteSpace: "nowrap",
   },
   drawerClose: {
     transition: theme.transitions.create("width", {
@@ -77,7 +79,8 @@ export default function Sidebar(props) {
       <Drawer
         variant="permanent"
         className={classes.drawerClose}
-        classes={classes.drawerClose}
+        classes={{paper:classes.paper}}
+        // classes={classes.drawerClose}
       >
         <div className={classes.toolbar}>
           <IconButton >
