@@ -10,6 +10,7 @@ import firebase from "../../firbase";
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditEvent from '../Events/EditEvent';
+import { Tooltip } from '@material-ui/core';
 
 // import axios from "axios";
 require('dotenv').config();
@@ -85,10 +86,23 @@ function Calendar(props) {
     }
 
     function dayStyles(day){
-        if(checkMonth(day)) return "before";
+        var s = "";
+        // console.log(events[1].eventDay.toDate());
+        if(checkMonth(day)) s = "before";
         if(isSelected(day)) return "selected";
         if(isToday(day)) return "today";
-        return "";
+        if(events){
+            events.forEach((eve,index) => {
+                if(eve.eventDay.toDate().getMonth() === day.toDate().getMonth()){
+                    if(eve.eventDay.toDate().getDate() === day.toDate().getDate()){
+                        if(index%3 ===0) s = s+"purple-card";
+                        else if(index%3 ===1)  s = s + "green-card";
+                        else s = s + "orange-card";
+                    }
+                }
+            });
+        }
+        return s;
     }
 
     function curMonth() {
@@ -162,6 +176,7 @@ function Calendar(props) {
             weeklyTime[i][0] = i+":00";
         }
     }
+
 
     return (
         <div className="main-container" style={{display:"flex"}}>
@@ -261,17 +276,24 @@ function Calendar(props) {
                             <div className={dayStyles(day)}>
                                 <span style={{height:"10px", width:"10px"}}>
                                     {day.format("D")}
-                                </span>  
-                                </div>
-                            {holidays.map((holiday) => {
-                                const dayH = holiday.date.datetime.day;
-                                const monthH = holiday.date.datetime.month;
-                                const month = day.format("M");
-                                const curDay = day.format("D");
-                                // if(month==monthH && curDay==dayH){
-                                //     return <div className="holiday-display">{holiday.name}</div>
-                                // } 
-                            })}
+                                </span>
+                                
+                            </div>
+                            <div className="dot-container">  
+                                    {holidays.map((holiday) => {
+                                        const dayH = holiday.date.datetime.day;
+                                        const monthH = holiday.date.datetime.month;
+                                        const month = day.format("M");
+                                        const curDay = day.format("D");
+                                        if(month==monthH && curDay==dayH){
+                                            return (
+                                                <Tooltip title={holiday.name} placement="bottom">
+                                                <div className="dot"></div>
+                                                </Tooltip>
+                                            );
+                                        } else return "";
+                                    })}
+                            </div>
                         </div>
                     ))}
                 </div>
@@ -279,7 +301,7 @@ function Calendar(props) {
         </div>)
         }
     </div>
-    <div className="divider"></div>
+    {/* <div className="divider"></div> */}
     <div className="events-display">
     <div className="event-title">Your Events</div>
     <div className="event-card-display">
@@ -292,7 +314,7 @@ function Calendar(props) {
                     
                     <div className={cardStyle(index)}>
                         <div style={{display:"flex"}}>
-                            <div style={{width:"25%"}}>
+                            <div style={{width:"50%"}}>
                                 <div>
                                 <div className="event-card-day" style={{display:"inline-block", marginRight:"5px"}}>
                                     {event.eventDay.toDate().getDate()}
@@ -304,13 +326,13 @@ function Calendar(props) {
                                 <div style={{marginTop:"10px"}}>
                                 {event.eventDay.toDate().toLocaleString('default',{weekday: 'long'})}
                                 </div>
-                                <div style={{display:"inline-block"}}>{`${formatAMPM(event.startTime.toDate())} - ${formatAMPM(event.endTime.toDate())}`}</div>
+                                <div style={{display:"inline-block",fontSize:"0.75rem"}}>{`${formatAMPM(event.startTime.toDate())} - ${formatAMPM(event.endTime.toDate())}`}</div>
                             </div>
-                            <div style={{display:"flex", flexDirection:"column",width:"75%"}}>
-                                <div style={{ fontSize:"2rem", fontWeight:"600"}}>
+                            <div style={{display:"flex", flexDirection:"column",width:"50%"}}>
+                                <div style={{ fontSize:"1.25rem", fontWeight:"600"}}>
                                 {event.title}
                                 </div>
-                                <div>
+                                <div style={{fontSize: "0.75rem"    }}>
                                 {event.description}
                                 </div>
                             </div>
@@ -323,6 +345,7 @@ function Calendar(props) {
                     </div>
                 );
             }
+            return "";
         })}
     </div>
     </div>
