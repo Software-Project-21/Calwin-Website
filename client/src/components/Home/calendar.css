@@ -1,10 +1,62 @@
+.main-container {
+    background-color: #ffffff;
+    padding-bottom: 2%;
+}
+/* .divider {
+    border-left: grey 1px solid;
+} */
+.events-display {
+    width: 40%;
+    height: auto;
+    height: 88vh;
+    background-color: #fbfbfb;
+    padding: 2%;
+    border-radius: 5%;
+    
+}
+.purple-card{
+    background-color: #d7d8f2;
+}
+.green-card {
+    background-color: #c7ebdc;
+}
+.orange-card {
+    background-color: #ffd6c3;
+}
+.event-card {
+    font-size: medium;
+    border-radius: 5px 30px 5px;
+    min-height: 10rem;
+    width: 100%;
+    margin-top: 3%;
+    padding: 25px;
+    padding-top: 28px;
+    text-align: center;
+}
+.event-card-display {
+    overflow-y:scroll;
+    height: 75vh;
+}
+.event-card-day {
+    font-weight: 700;
+    font-size: 3rem;
+}
+.event-title {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 100;
+    margin-top: 3%;
+}
 .calendar {
     /* margin: ; */
-    box-sizing: border-box;
+    /* box-sizing: border-box; */
+    margin-top: 1%;
     font-size: 1rem;
-    width: 100%;
+    width: 60%;
+    padding-left: 2%;
+    padding-right: 2%;
+    
 }
-
 .calendar .header {
     background-color: light-blue;
     text-align: center;
@@ -19,9 +71,12 @@
     justify-content: space-around;
     /* display: block; */
 }
-
+.header {
+    background-color: #ffffff;
+}
 .calendar .header div {
     display: inline-block;
+    
 }
 
 .current{
@@ -41,7 +96,7 @@
 }
 
 .calendar .body {
-    border: 1px solid light-blue;
+    /* border: 1px solid light-blue; */
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
@@ -58,7 +113,7 @@
 } */
 
 .calendar .week {
-    background-color: white;
+    background-color: #ffffff;
     width: calc(100% / 7);
     height: 44px;
     line-height: 44px;
@@ -66,7 +121,6 @@
     text-transform: uppercase;
     color: black;
     font-weight: 400;
-    border: #dadce0 1px solid;
     /* display: flex; */
 }
 
@@ -75,7 +129,7 @@
 }
 
 .calendar .time-week {
-    background-color: white;
+    background-color: #ffffff;
     width: 5.5%;
     height: 44px;
     line-height: 44px;
@@ -92,7 +146,7 @@
 }
 
 .calendar .weekly-week {
-    background-color: white;
+    background-color: #ffffff;
     width: calc(94.5%/7);
     height: 44px;
     line-height: 44px;
@@ -100,14 +154,16 @@
     text-transform: uppercase;
     color: black;
     font-weight: 400;
-    border: #dadce0 1px solid;
+    /* border: #dadce0 1px solid; */
     /* display: flex; */
 }
 
 .calendar .weekly-week div {
     width: calc(94.5%/7);
 }
-
+.calendar .week .day {
+    border-left: #dadce0 1px solid;
+}
 .day {
     text-align: center;
     position: relative;
@@ -116,25 +172,26 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: white;
+    background-color: #ffffff;
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-    border: #dadce0 1px solid;
+    /* border: #dadce0 1px solid; */
     z-index: 1;
     text-align: center;
     cursor: pointer;
 }
 
 .day div {
-    text-align: center;
-    width: calc(100% / 7);
+    height: 40px;
+    width: 40px;
     position: relative;
     color: black;
     z-index: 100;
-    border-radius: 100%;
-    padding: 2px;
-    padding: auto 5px;
+    border-radius: 50%;
+    padding: 10px 10px;
+    text-align: center;
+    /* padding: auto 5px; */
 }
 
 /* .calendar .weekly-day {
@@ -150,24 +207,28 @@
 }
 
 .calendar .day div.selected {
-    background-color: red;
+    
+    background-color: #4a4ec6;
     color: White;
     font-weight: bold;
 }
 
 .calendar .day div.today {
-    background-color: grey;
+    background-color: #a0a3ff;
+    color: #ffffff;
 }
 
 .time-matrix{
+    max-height: 61vh;
     display: flex;
     flex-direction: column;
     background-color: #ffffff;
+    overflow-y:scroll;
 }
 
 .timeStamp{
     width: 5.5%;
-    border: #dadce0 1px solid;
+    border-left: #dadce0 1px solid;
     height: 50px;
 }
 

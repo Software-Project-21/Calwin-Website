@@ -1,3 +1,9 @@
+.main-block {
+    background-color: #ffffff;
+    margin: 2%;
+    min-height: 100vh;
+    height: auto;
+}
 .public:hover{
     background-color: #6270c1;
     color: white;
@@ -12,4 +18,20 @@
 .selectedList{
     background-color: #3f51b5;
     color: white;
+}
+.event-list{
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    height: 89vh;
+}
+
+.content:hover {
+    /* background-color: red; */
+        background-color: #c3d1e8;
+}
+.content{
+    padding: 2px;
+    border-radius: 20px;
+    padding-left: 10px;
 }
