@@ -96,7 +96,8 @@ function Events() {
             />
             <div style={{width:"100%"}} >
                 <SearchBar/>
-                <div style={{display: "block"}}>
+                <div className="main-block">
+                <div style={{display: "block", paddingLeft:"2%", paddingRight:"2%"}}>
                     <div id="public" className="public selectedList" onClick={showPublic} style={{fontSize:"20px",padding:"3px",display:"inline-block",width:"50%",textAlign:"center"}}>
                         Public Holidays
                     </div>
@@ -105,7 +106,7 @@ function Events() {
                     </div>
                 </div>
                 {publicEve ? 
-                    (<div className="event-list">
+                    (<div className="event-list" style={{paddingLeft:"2%", paddingRight:"2%"}}>
                     {holidays.map((holiday,index) => (
                         <div style={{padding:"1%",display:"flex",border:"#dadce0 1px solid"}}>
                             <div style={{display:"flex",flexBasis:"10%"}}>
@@ -143,7 +144,7 @@ function Events() {
                     ))}
                 </div>) : (
                     <div className="event-list">
-                        {events.length!==0 ? (events.map((event,index) => (
+                        {(typeof events!=="undefined" && events.length !== 0) ? (events.map((event,index) => (
                             <div style={{padding:"1%",display:"flex",border:"#dadce0 1px solid"}}>
                                 <div style={{display:"flex",flexBasis:"10%",paddingTop:"3px"}}>
                                     <div style={{flexBasis:"25%",fontWeight:"700",fontSize:"1.1rem"}}>
@@ -161,7 +162,7 @@ function Events() {
                                         <div style={{display:"inline-block",width:"20%"}}>
                                             <div style={{height:"10px",width:"10px",borderRadius:"100%",backgroundColor:"rgb(3, 155, 229)",margin:"5px 5px 0 0",display:"inline-block"}}>
                                             </div>
-                                            {/* <div style={{display:"inline-block"}}>{`${event.startTime.toDate().toLocaleTimeString().split(" ")[0].substr(0,5)} ${event.startTime.toDate().toLocaleTimeString().split(" ")[1]}-${event.endTime.toDate().toLocaleTimeString().split(" ")[0].substr(0,5)} ${event.endTime.toDate().toLocaleTimeString().split(" ")[1]}`}</div> */}
+                                            {/* <div style={{display:"inline-block"}}>{`${event.startTime.toDate().toLocaleTimeString().split(" ")[0].substr(0,5)} - ${event.endTime.toDate().toLocaleTimeString().split(" ")[0].substr(0,5)} `}</div> */}
                                             <div style={{display:"inline-block"}}>{`${formatAMPM(event.startTime.toDate())} - ${formatAMPM(event.endTime.toDate())}`}</div>
                                         </div>
                                         <div style={{display:"inline-block",width:"70%"}}>
@@ -184,11 +185,14 @@ function Events() {
                                 </div>
                             </div>
                         ))) : 
-                        <div>No Events to show</div>
+                        <div style={{backgroundColor:"white"}}>
+                            <h1 style={{textAlign:"center", paddingTop:"20%"}}>No Events to show</h1>
+                        </div>
                         }
                     </div>
                 )
                 }
+            </div>
             </div>
         </div>
         {edit ? <EditEvent events={events} setEvents={setEvents} setEdit={setEdit} edit={edit} eventId={eventId} setEventId={setEventId} scroll='paper'/> : ""}

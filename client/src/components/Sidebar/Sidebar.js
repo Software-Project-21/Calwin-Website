@@ -15,6 +15,7 @@ import { useHistory } from "react-router";
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import {useAuth} from "../Auth/AuthContext";
 import AddEvent from "../Events/AddEvent";
+import Tooltip from '@material-ui/core/Tooltip';
 
 const drawerWidth = 240;
 
@@ -50,6 +51,10 @@ const useStyles = makeStyles((theme) => ({
   content: {
     flexGrow: 1,
     padding: theme.spacing(3)
+    
+  },
+  tooltip: {
+    fontSize: "2em",
   }
 }));
 
@@ -80,18 +85,26 @@ export default function Sidebar(props) {
           </IconButton>
         </div>
         <List className="list">
+          <Tooltip title="Go To Today" placement="right" className={classes.tooltip}>
           <ListItem button className="list-item" onClick={() => props.setVal(moment())}>
             <TodayIcon/>
           </ListItem>
+          </Tooltip>
+          <Tooltip title="Events List" placement="right">
           <ListItem button className="list-item" onClick={() => history.push("/events")}>
             <EventNoteIcon/>
           </ListItem>
+          </Tooltip>
+          <Tooltip title="Calendar" placement="right">
           <ListItem button className="list-item" onClick={() => history.push(`/calendar/${currentUser.providerData[0].uid}`)}>
             <CalendarTodayIcon />
           </ListItem>
+          </Tooltip>
+          <Tooltip title="Add Event" placement="right">
           <ListItem button className="list-item" onClick={() => handleAddEvent('paper')}>
             <AddCircleIcon/>
           </ListItem>
+          </Tooltip>
         </List>
       </Drawer>
       <AddEvent open={open} setOpen={setOpen} scroll={scroll} setScroll={setScroll}/>
