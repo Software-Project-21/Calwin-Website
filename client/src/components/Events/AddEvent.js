@@ -94,17 +94,17 @@ function AddEvent(props) {
             >
             <DialogTitle id="scroll-dialog-title">Add Event</DialogTitle>
             <DialogContent dividers={props.scroll === 'paper'}>
-                <form className={classes.root} noValidate >
+                <form className={classes.root}>
                     <TextField required id="standard-basic title" placeholder="Title" value={title} onChange={(e) => handleChange(e)}/>
                     <TextField
                         id="standard-basic description"
-                        placeholder="Description"
+                        placeholder="Description(max 64 char)"
                         multiline
                         // rows={4}
                         // variant="outlined"
                         value={desc}
                         onChange={(e) => handleChange(e) }
-                        inputProps={{maxLength: 100}}
+                        inputProps={{maxLength: 64}}
                         fullWidth
                         // style={{margin: "2% 0"}}
                     />

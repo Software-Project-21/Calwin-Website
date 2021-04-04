@@ -6,7 +6,7 @@
     border-left: grey 1px solid;
 } */
 .events-display {
-    width: 40%;
+    width: 30%;
     height: auto;
     height: 88vh;
     background-color: #fbfbfb;
@@ -26,11 +26,11 @@
 .event-card {
     font-size: medium;
     border-radius: 5px 30px 5px;
-    min-height: 10rem;
+    /* min-height: 10rem; */
     width: 100%;
     margin-top: 3%;
-    padding: 25px;
-    padding-top: 28px;
+    margin-right: 1%;
+    padding: 5px 10px;
     text-align: center;
 }
 .event-card-display {
@@ -39,11 +39,11 @@
 }
 .event-card-day {
     font-weight: 700;
-    font-size: 3rem;
+    font-size: 1rem;
 }
 .event-title {
     text-align: center;
-    font-size: 2rem;
+    font-size: 1rem;
     font-weight: 100;
     margin-top: 3%;
 }
@@ -52,7 +52,7 @@
     /* box-sizing: border-box; */
     margin-top: 1%;
     font-size: 1rem;
-    width: 60%;
+    width: 70%;
     padding-left: 2%;
     padding-right: 2%;
     
@@ -210,11 +210,14 @@
     
     background-color: #4a4ec6;
     color: White;
+    border-radius: 5px;
     font-weight: bold;
 }
 
 .calendar .day div.today {
     background-color: #a0a3ff;
+    border-radius: 5px ;
+    /* border: 5px solid black; */
     color: #ffffff;
 }
 
@@ -245,4 +248,20 @@
     width: 100%;
     max-height: 12px;
     margin-bottom: 2px;
+}
+
+.day .dot{
+    height: 2px;
+    width: 2px;
+    border-radius: 50%;
+    padding: 4px;
+    margin-right: 1px;
+    background-color: #ff8020;
+}
+
+.day .dot-container{
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    text-align: center;
 }

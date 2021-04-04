@@ -21,13 +21,15 @@ const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: "flex",
-    backgroundColor: "#6f51ed"
+    display: "flex"
+  },
+  paper: {
+    background: "#494DC4"
   },
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
-    whiteSpace: "nowrap"
+    whiteSpace: "nowrap",
   },
   drawerClose: {
     transition: theme.transitions.create("width", {
@@ -77,32 +79,34 @@ export default function Sidebar(props) {
       <Drawer
         variant="permanent"
         className={classes.drawerClose}
-        classes={classes.drawerClose}
+        classes={{paper:classes.paper}}
+        // classes={classes.drawerClose}
       >
         <div className={classes.toolbar}>
           <IconButton >
-            <MdFingerprint className='icon' onClick={() => history.push('/')}/>
+            {/* <MdFingerprint className='icon' onClick={() => history.push('/')}/> */}
+            <img src="/images/logo.svg" alt="logo" style={{height:"40px",width:"40px"}} onClick={() => history.push('/')}></img>
           </IconButton>
         </div>
         <List className="list">
           <Tooltip title="Go To Today" placement="right" className={classes.tooltip}>
           <ListItem button className="list-item" onClick={() => props.setVal(moment())}>
-            <TodayIcon/>
+            <TodayIcon style={{color:"#ffffff"}}/>
           </ListItem>
           </Tooltip>
           <Tooltip title="Events List" placement="right">
           <ListItem button className="list-item" onClick={() => history.push("/events")}>
-            <EventNoteIcon/>
+            <EventNoteIcon style={{color:"#ffffff"}}/>
           </ListItem>
           </Tooltip>
           <Tooltip title="Calendar" placement="right">
           <ListItem button className="list-item" onClick={() => history.push(`/calendar/${currentUser.providerData[0].uid}`)}>
-            <CalendarTodayIcon />
+            <CalendarTodayIcon style={{color:"#ffffff"}}/>
           </ListItem>
           </Tooltip>
           <Tooltip title="Add Event" placement="right">
           <ListItem button className="list-item" onClick={() => handleAddEvent('paper')}>
-            <AddCircleIcon/>
+            <AddCircleIcon style={{color:"#ffffff"}}/>
           </ListItem>
           </Tooltip>
         </List>
