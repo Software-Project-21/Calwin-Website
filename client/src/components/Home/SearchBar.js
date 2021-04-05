@@ -18,7 +18,9 @@ import { useHistory } from "react-router";
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: "white",
-    borderRadius: "2px"
+    borderRadius: "2px",
+    borderBottom: "1px solid #dadce0",
+    // height: "1"
   },
   grow: {
     flexGrow: 1
@@ -193,7 +195,7 @@ export default function SearchBar() {
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             <IconButton aria-label="show 17 new notifications" color="inherit">
-              <Badge badgeContent={17} color="secondary">
+              <Badge badgeContent={14} color="secondary">
                 <NotificationsIcon style={{ color: "black" }} />
               </Badge>
             </IconButton>

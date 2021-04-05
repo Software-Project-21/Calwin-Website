@@ -118,15 +118,16 @@ function EditEvent(props) {
     },[props.eventId,currentUser])
 
     return (
-        <div>
+        // <div>
             <Dialog
             open={props.edit}
             onClose={handleClose}
             scroll={props.scroll}
+            overlayStyle={{backgroundColor:'transparent'}}
             aria-labelledby="scroll-dialog-title"
             aria-describedby="scroll-dialog-description"
             >
-            <DialogTitle id="scroll-dialog-title">Add Event</DialogTitle>
+            <DialogTitle id="scroll-dialog-title">Edit Event</DialogTitle>
             <DialogContent dividers={props.scroll === 'paper'}>
                 <form className={classes.root} noValidate >
                     <TextField required id="standard-basic title" placeholder="Title" value={title} onChange={(e) => handleChange(e)}/>
@@ -155,7 +156,7 @@ function EditEvent(props) {
             </Button>
             </DialogActions>
         </Dialog>
-        </div>
+        // </div>
     );
 }
 
