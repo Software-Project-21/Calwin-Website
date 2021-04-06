@@ -1,6 +1,12 @@
 .login-screen{
-    /* margin-top: 20px; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-height: 30rem;
+    border-radius: 5%;
+    margin-top: 5%;
     /* margin-right: 100px; */
+    min-width: 25%;
     padding: 30px;
     padding-top: 100px;
     padding-bottom: 0;

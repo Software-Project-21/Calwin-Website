@@ -25,14 +25,12 @@ export default function Login() {
                 <img className="login-image" src="images/login.png" alt="login"></img>
           </div>
           <div className="login-screen">
-            {/* <h1>
-              Welcome to CalWin - Sign In <hr/>
-              {currentUser && currentUser.email}
-            </h1> */}
+            <h1 style={{color:"#ffffff", marginBottom:"20%"}}>Login</h1>
             <div className="login-button" style={{margin:"2% 1%",display:"inline-block"}}>
-            <Button disabled={loading} onClick={handleLogin} style={{backgroundColor: "#ffffff", color: "#000000", borderTopLeftRadius:"50px", borderBottomLeftRadius:"50px", borderTopRightRadius:"50px", borderBottomRightRadius:"50px"}} color="secondary">
+            <Button disabled={loading} onClick={handleLogin} style={{height:"120%",width:"20rem", backgroundColor: "#ffffff", color: "#000000", borderTopLeftRadius:"50px", borderBottomLeftRadius:"50px", borderTopRightRadius:"50px", borderBottomRightRadius:"50px"}} color="secondary">
                 <span>
-                  <GoogleIcon style={{height: "40px", backgroundColor:"white",marginTop:"10px"}}/>
+                  <img src="images/google-logo.svg" alt="logo" style={{height:"40px", padding:"2%"}}></img>
+                  {/* <GoogleIcon style={{height: "40px", backgroundColor:"white",marginTop:"10px"}}/> */}
                   <span>Sign In With Google</span>
                 </span>
             </Button>
