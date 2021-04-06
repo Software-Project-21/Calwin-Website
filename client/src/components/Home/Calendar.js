@@ -12,8 +12,10 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditEvent from '../Events/EditEvent';
 import { Tooltip } from '@material-ui/core';
 import NativeSelect from "@material-ui/core/NativeSelect";
-
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
 import { makeStyles } from '@material-ui/core/styles';
+import AddEvent from "../Events/AddEvent";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -43,6 +45,8 @@ function Calendar(props) {
     const [eventId,setEventId] = useState("");
     const [edit,setEdit] = useState(false);
     const [numEvents,setNumEvents] = useState(0);
+    const [open,setOpen] = useState(false);
+    const [scroll, setScroll] = React.useState('paper');
 
     useEffect(() => {
         setCalendar(buildCalendar(props.val,viewType));
@@ -69,6 +73,11 @@ function Calendar(props) {
             setHomeDisplay(events);
         }
     },[events]);
+
+    function  handleAddEvent(scrollType){
+        setOpen(true);
+        setScroll(scrollType);
+    }
 
     function handleEdit(event) {
         setEdit(true);
@@ -368,8 +377,15 @@ function Calendar(props) {
         {numEvents===0 && <div>No Event</div> }
         {console.log(numEvents)}
     </div>
+    <div style={{textAlign:"right"} }>
+    <Fab color="primary" aria-label="add">
+        <AddIcon onClick={() => handleAddEvent('paper')}/>
+      </Fab>
+    
     </div>
     </div>
+    </div>
+    <AddEvent open={open} setOpen={setOpen} scroll={scroll} setScroll={setScroll}/>
     {edit ? <EditEvent events={events} setEvents={setEvents} setEdit={setEdit} edit={edit} eventId={eventId} setEventId={setEventId} scroll='paper'/> : ""}
     </>
     );
