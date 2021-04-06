@@ -10,7 +10,8 @@ import DatePicker from './DatePicker';
 import TimePicker from "./TimePicker";
 import firebase from '../../firbase';
 import { useAuth } from '../Auth/AuthContext';
-import nextId from "react-id-generator";
+// import nextId from "react-id-generator";
+import uniqid from "uniqid";
 
 const db = firebase.firestore();
 
@@ -41,7 +42,7 @@ function AddEvent(props) {
 
     const handleSubmit = () => {
         const eve = {
-            id: nextId(),
+            id: uniqid(),
             title: title,
             description: desc,
             eventDay : firebase.firestore.Timestamp.fromDate(selectedDate),

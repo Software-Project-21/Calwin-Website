@@ -1,6 +1,41 @@
 .main-container {
     background-color: #ffffff;
-    padding-bottom: 2%;
+    /* overflow: hidden; */
+    display: flex;
+    /* padding-bottom: 2%; */
+}
+
+@media(max-width: 1000px){
+    .main-container{
+        flex-direction: column;
+    }
+    .calendar{
+        width: 100% !important;
+    }
+    .events-display{
+        width: 100% !important;
+    }
+    .event-card-display .event-card{
+        width: 30% !important;
+
+    }
+    .event-card-display{
+        flex-direction: row !important;
+        height: auto !important;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+}
+
+@media(max-width: 800px){
+    .event-card-display .event-card{
+        width: 42% !important;
+    }
+}
+@media(max-width: 600px){
+    .event-card-display .event-card {
+        width: 90% !important;
+    }
 }
 /* .divider {
     border-left: grey 1px solid;
@@ -8,11 +43,12 @@
 .events-display {
     width: 30%;
     height: auto;
-    height: 88vh;
+    /* height: 90vh; */
     background-color: #fbfbfb;
     padding: 2%;
-    border-radius: 5%;
-    
+    /* overflow: hidden; */
+    /* position: relative; */
+    /* border-radius: 5%; */
 }
 .purple-card{
     background-color: #d7d8f2;
@@ -33,9 +69,23 @@
     padding: 5px 10px;
     text-align: center;
 }
+
+::-webkit-scrollbar {
+    width: 0;
+    /* Remove scrollbar space */
+    background: transparent;
+    /* Optional: just make scrollbar invisible */
+}
+
+
 .event-card-display {
     overflow-y:scroll;
+    /* overflow; */
+    /* overflow: hidden ; */
     height: 75vh;
+    display: flex;
+    flex-direction: column;
+    /* position: absolute; */
 }
 .event-card-day {
     font-weight: 700;
@@ -44,13 +94,13 @@
 .event-title {
     text-align: center;
     font-size: 1rem;
-    font-weight: 100;
+    font-weight: 700;
     margin-top: 3%;
 }
 .calendar {
     /* margin: ; */
     /* box-sizing: border-box; */
-    margin-top: 1%;
+    /* margin-top: 1%; */
     font-size: 1rem;
     width: 70%;
     padding-left: 2%;
@@ -58,25 +108,22 @@
     
 }
 .calendar .header {
-    background-color: light-blue;
+    /* background-color: light-blue;s */
     text-align: center;
     min-height: 2rem;
     /* line-height: 2rem; */
     color: black;
     font-family: var(--font-book);
     font-weight: 700;
-    margin-top: 5px;
+    margin-bottom: 5px;
     /* width: 50%; */
     display: flex;
     justify-content: space-around;
     /* display: block; */
 }
-.header {
-    background-color: #ffffff;
-}
+
 .calendar .header div {
     display: inline-block;
-    
 }
 
 .current{
@@ -100,7 +147,7 @@
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
-    border: #dadce0 1px solid;
+    border: #dadce0 2px solid;
 }
 
 /* .calendar .header .previous {
@@ -113,7 +160,6 @@
 } */
 
 .calendar .week {
-    background-color: #ffffff;
     width: calc(100% / 7);
     height: 44px;
     line-height: 44px;
@@ -129,7 +175,6 @@
 }
 
 .calendar .time-week {
-    background-color: #ffffff;
     width: 5.5%;
     height: 44px;
     line-height: 44px;
@@ -146,7 +191,6 @@
 }
 
 .calendar .weekly-week {
-    background-color: #ffffff;
     width: calc(94.5%/7);
     height: 44px;
     line-height: 44px;
@@ -168,11 +212,10 @@
     text-align: center;
     position: relative;
     width: calc(100% / 7);
-    height: 100px;
+    /* height: 100px; */
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #ffffff;
     padding: 0;
     margin: 0;
     box-sizing: border-box;
@@ -217,7 +260,6 @@
 .calendar .day div.today {
     background-color: #a0a3ff;
     border-radius: 5px ;
-    /* border: 5px solid black; */
     color: #ffffff;
 }
 
@@ -225,13 +267,12 @@
     max-height: 61vh;
     display: flex;
     flex-direction: column;
-    background-color: #ffffff;
     overflow-y:scroll;
 }
 
 .timeStamp{
     width: 5.5%;
-    border-left: #dadce0 1px solid;
+    border: #dadce0 1px solid;
     height: 50px;
 }
 

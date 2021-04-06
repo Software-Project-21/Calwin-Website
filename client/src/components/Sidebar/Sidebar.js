@@ -21,10 +21,12 @@ const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: "flex"
+    display: "flex",
+    height: "100vh"
   },
   paper: {
-    background: "#494DC4"
+    background: "#494DC4",
+    width: "60px"
   },
   drawer: {
     width: drawerWidth,
@@ -83,7 +85,7 @@ export default function Sidebar(props) {
         // classes={classes.drawerClose}
       >
         <div className={classes.toolbar}>
-          <IconButton >
+          <IconButton style={{padding:"0"}}>
             {/* <MdFingerprint className='icon' onClick={() => history.push('/')}/> */}
             <img src="/images/logo.svg" alt="logo" style={{height:"40px",width:"40px"}} onClick={() => history.push('/')}></img>
           </IconButton>

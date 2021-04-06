@@ -11,6 +11,19 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditEvent from '../Events/EditEvent';
 import { Tooltip } from '@material-ui/core';
+import NativeSelect from "@material-ui/core/NativeSelect";
+
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme) => ({
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
+  },
+}));
 
 // import axios from "axios";
 require('dotenv').config();
@@ -18,6 +31,8 @@ require('dotenv').config();
 const db = firebase.firestore();
 
 function Calendar(props) {
+
+    const classes = useStyles();
 
     const [homeDisplay,setHomeDisplay] = useState([]);
     const [calendar,setCalendar] = useState([]);
@@ -27,6 +42,7 @@ function Calendar(props) {
     const {currentUser} = useAuth();
     const [eventId,setEventId] = useState("");
     const [edit,setEdit] = useState(false);
+    const [numEvents,setNumEvents] = useState(0);
 
     useEffect(() => {
         setCalendar(buildCalendar(props.val,viewType));
@@ -179,10 +195,11 @@ function Calendar(props) {
 
 
     return (
+        <>
         <div className="main-container" style={{display:"flex"}}>
         <div className="calendar">
         <div className="header">
-            <div style={{paddingTop:"20px"}}>
+            <div style={{paddingTop:"15px"}}>
                 <div className="navigation" onClick={() => handlePrev()}>
                     <NavigateBeforeIcon />
                 </div>
@@ -190,20 +207,30 @@ function Calendar(props) {
                     <NavigateNextIcon />
                 </div>
             </div>
-            <div className="current" style={{paddingTop:"25px"}}>
+            <div className="current" style={{paddingTop:"20px"}}>
                 {curMonth()} {curYear()}
             </div>
             <div>
-                <ControlledOpenSelect 
+                {/* <ControlledOpenSelect 
                     viewType = {viewType}
                     setviewType = {setviewType}
-                />
+                /> */}
+                <NativeSelect
+                    value={viewType}
+                    onChange={(e) => setviewType(e.target.value)}
+                    name="View"
+                    className={classes.selectEmpty}
+                    inputProps={{ 'aria-label': 'age' }}
+                    >
+                    <option value="month">Month</option>
+                    <option value="week">Week</option>
+                </NativeSelect>
             </div>
         </div>
         {viewType==="week" ?
-        (<div className="time-body">
+        (<div className="time-body" >
         <div className="time-column">
-        <div className="body">
+        <div className="body" style={{borderRadius: "10px"}}>
             <div className="day-names">
                 {["Time","SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"].map((d) => {
                     if(d==="SAT" || d==="SUN"){
@@ -221,15 +248,6 @@ function Calendar(props) {
                     {week.map((day) => (
                         <div className="day" onClick={() => props.setVal(day)}>
                             <div className={dayStyles(day)}>{day.format("D")}</div>
-                            {holidays.map((holiday) => {
-                                const dayH = holiday.date.datetime.day;
-                                const monthH = holiday.date.datetime.month;
-                                const month = day.format("M");
-                                const curDay = day.format("D");
-                                // if(month==monthH && curDay==dayH){
-                                //     return <div className="holiday-display">{holiday.name}</div>
-                                // } 
-                            })}
                         </div>
                     ))}
                 </div>
@@ -260,7 +278,7 @@ function Calendar(props) {
         </div>
     </div>)
     : 
-        (<div className="body">
+        (<div className="body" style={{borderRadius: "10px"}}>
             <div className="day-names">
                 {["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"].map((d) => {
                     if(d==="SAT" || d==="SUN"){
@@ -310,8 +328,8 @@ function Calendar(props) {
             const curmonth = curMonth();
             if(month === curmonth)
             {
+                numEvents===0 && setNumEvents(1)  
                 return (
-                    
                     <div className={cardStyle(index)}>
                         <div style={{display:"flex"}}>
                             <div style={{width:"50%"}}>
@@ -347,9 +365,13 @@ function Calendar(props) {
             }
             return "";
         })}
+        {numEvents===0 && <div>No Event</div> }
+        {console.log(numEvents)}
     </div>
     </div>
     </div>
+    {edit ? <EditEvent events={events} setEvents={setEvents} setEdit={setEdit} edit={edit} eventId={eventId} setEventId={setEventId} scroll='paper'/> : ""}
+    </>
     );
 }
 

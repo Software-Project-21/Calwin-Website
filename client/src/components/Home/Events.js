@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {HolidaysContext} from "./HolidayContext";
-import "../Events/Events.css";
+// import "../Events/Events.css";
 import moment from "moment";
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import SearchBar from './SearchBar';
@@ -12,6 +12,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import EditEvent from '../Events/EditEvent';
+// import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 
 const db = firebase.firestore();
 
@@ -108,12 +109,12 @@ function Events() {
                 {publicEve ? 
                     (<div className="event-list" style={{paddingLeft:"2%", paddingRight:"2%"}}>
                     {holidays.map((holiday,index) => (
-                        <div style={{padding:"1%",display:"flex",border:"#dadce0 1px solid"}}>
-                            <div style={{display:"flex",flexBasis:"10%"}}>
-                                <div style={{flexBasis:"25%",fontWeight:"700",fontSize:"1.1rem"}}>
+                        <div className="card">
+                            <div className="date" >
+                                <div style={{fontWeight:"700",fontSize:"1.1rem"}}>
                                     {holiday.date.datetime.day}
                                 </div>
-                                <div style={{flexBasis:"30%",paddingTop:"3px"}}>
+                                <div style={{paddingTop:"3px"}}>
                                 {moment(holiday.date.iso).format('MMMM').substr(0,3)}
                                 </div>
                                 <div style={{paddingTop:"3px"}}>
@@ -122,7 +123,7 @@ function Events() {
                             </div>
                             <div onClick={() => handleExpand(index)} className="content" style={{display:"flex",flexGrow:"3",fontWeight:"600",flexDirection:"column"}}>
                                 <div style={{display:"flex"}}>
-                                    <div style={{flexBasis:"15%",display:"flex"}}>
+                                    <div style={{display:"flex",marginRight:"30px"}}>
                                         <div style={{height:"10px",width:"10px",borderRadius:"100%",backgroundColor:"green",margin:"5px 5px 0 0"}}>
                                         </div>
                                         <div>All Day</div>
@@ -145,33 +146,28 @@ function Events() {
                 </div>) : (
                     <div className="event-list">
                         {(typeof events!=="undefined" && events.length !== 0) ? (events.map((event,index) => (
-                            <div style={{padding:"1%",display:"flex",border:"#dadce0 1px solid"}}>
-                                <div style={{display:"flex",flexBasis:"10%",paddingTop:"3px"}}>
-                                    <div style={{flexBasis:"25%",fontWeight:"700",fontSize:"1.1rem"}}>
+                            <div className="card">
+                                <div className="date">
+                                    <div style={{fontWeight:"700",fontSize:"1.1rem"}}>
                                         {event.eventDay.toDate().getDate()}
                                     </div>
-                                    <div style={{flexBasis:"30%",paddingTop:"3px"}}>
+                                    <div style={{paddingTop:"3px"}}>    
                                         {event.eventDay.toDate().toLocaleString('default',{month: 'short'})}
                                     </div>
                                     <div style={{paddingTop:"3px"}}>
                                     {event.eventDay.toDate().toLocaleString('default',{weekday: 'short'})}
                                     </div>
                                 </div>
-                                <div className="content" style={{fontWeight:"600",width:"100%"}}>
-                                    <div>
-                                        <div style={{display:"inline-block",width:"20%"}}>
+                                <div className="content" >
+                                    <div className="main-details">
+                                        <div style={{marginRight:"30px",display:"flex"}}>
                                             <div style={{height:"10px",width:"10px",borderRadius:"100%",backgroundColor:"rgb(3, 155, 229)",margin:"5px 5px 0 0",display:"inline-block"}}>
                                             </div>
                                             {/* <div style={{display:"inline-block"}}>{`${event.startTime.toDate().toLocaleTimeString().split(" ")[0].substr(0,5)} - ${event.endTime.toDate().toLocaleTimeString().split(" ")[0].substr(0,5)} `}</div> */}
-                                            <div style={{display:"inline-block"}}>{`${formatAMPM(event.startTime.toDate())} - ${formatAMPM(event.endTime.toDate())}`}</div>
+                                            <div>{`${formatAMPM(event.startTime.toDate())} - ${formatAMPM(event.endTime.toDate())}`}</div>
                                         </div>
-                                        <div style={{display:"inline-block",width:"70%"}}>
+                                        <div>
                                             {event.title}
-                                        </div>
-                                        <div style={{display:"inline-block",width:"10%",textAlign:"right"}}>
-                                            <EditIcon fontSize="small" onClick={() => handleEdit(event)} style={{cursor:"pointer"}}/>
-                                            <DeleteIcon fontSize="small" onClick={() => handleDelete(event)} style={{marginLeft: "10px",cursor:"pointer"}}/>
-                                            <ExpandMoreIcon fontSize="small" onClick={() => handleExpand(index)} style={{marginLeft:"10px",marginRight:"10px",cursor:"pointer"}}/>
                                         </div>
                                     </div>
                                     { expand[index] ? (
@@ -180,8 +176,13 @@ function Events() {
                                                 <div>{event.description==="" ? "No Description Provided" : event.description}</div>
                                             </div>
                                         </div>
-                                        ):<div></div>
+                                        ): ""
                                     }
+                                    <div style={{textAlign:"right"}}>
+                                            <EditIcon fontSize="small" onClick={() => handleEdit(event)} style={{cursor:"pointer"}}/>
+                                            <DeleteIcon fontSize="small" onClick={() => handleDelete(event)} style={{marginLeft: "10px",cursor:"pointer"}}/>
+                                            {!expand[index] ? <ExpandMoreIcon fontSize="small" onClick={() => handleExpand(index)} style={{marginLeft:"10px",marginRight:"10px",cursor:"pointer"}}/> : <ExpandLessIcon fontSize="small" onClick={() => handleExpand(index)} style={{marginLeft:"10px",marginRight:"10px",cursor:"pointer"}}/>}
+                                    </div>
                                 </div>
                             </div>
                         ))) : 
