@@ -88,6 +88,27 @@ function Events() {
         });
     },[currentUser])
 
+    useEffect(() => {
+        if(navigator.geolocation){
+            navigator.permissions
+                .query({name:"geolocation"})
+                .then(function(res){
+                    if(res.state ==="granted"){
+                        console.log(res.state);
+                    } else if(res.state==="prompt"){
+                        console.log(res.state);
+                    } else if(res.state==="denied"){
+                        console.log("denied");
+                    }
+                    res.onchange = function () {
+                        console.log(res.state);
+                    }
+                })
+        } else{
+            alert("Sorry not available")
+        }
+    },[])
+
     return (
         <>
         
