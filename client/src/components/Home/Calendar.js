@@ -16,6 +16,10 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import { makeStyles } from '@material-ui/core/styles';
 import AddEvent from "../Events/AddEvent";
+import ReactNotification from 'react-notifications-component';
+import {store} from 'react-notifications-component';
+import 'animate.css'
+import 'react-notifications-component/dist/theme.css'
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -73,6 +77,40 @@ function Calendar(props) {
             setHomeDisplay(events);
         }
     },[events]);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            // if(events[4].eventDay.toDate().getDate()===new Date().getDate)
+            // {
+            //     console.log("Yes");
+            // }
+            for(var i=0;i<events.length;i++)
+            {
+                const A = events[i].startTime.toDate();
+                const B = new Date();
+                const C = Math.abs((A - B));
+                if ( C < 600000 && C > 540000)
+                {
+                    var tit = events[i].title;
+                    store.addNotification({
+                        title: "Event Reminder(10 minutes to go)",
+                        message: tit,
+                        type: "success",
+                        container: "top-right",
+                        insert: "top",
+                        animationIn: ["animated","fadeIn"],
+                        animationOut: ["animated","fadeOut"],
+                        width: 450,
+                        // dismiss: {
+                        //     duration: 10000,
+                        //     showIcon: true
+                        // }
+                    })
+                }
+            }
+          }, 45000);
+          return () => clearInterval(interval);
+    },[events])
 
     function  handleAddEvent(scrollType){
         setOpen(true);
@@ -202,12 +240,23 @@ function Calendar(props) {
         }
     }
 
+    // function Butt() {
+        
+    //     return(
+    //         <div>
+    //             <button onClick={notify}>
+    //             hehe</button>
+    //         </div>
+    //     )
+    // }
 
     return (
         <>
+        <ReactNotification />
         <div className="main-container" style={{display:"flex"}}>
         <div className="calendar">
         <div className="header">
+        
             <div style={{paddingTop:"15px"}}>
                 <div className="navigation" onClick={() => handlePrev()}>
                     <NavigateBeforeIcon />
@@ -374,7 +423,7 @@ function Calendar(props) {
             }
             return "";
         })}
-        {numEvents===0 && <div>No Event</div> }
+        {numEvents===0 && <div style={{textAlign:"center", marginTop:"50%"}}><h1>No Event</h1></div> }
         {console.log(numEvents)}
     </div>
     <div style={{textAlign:"right"} }>
@@ -390,5 +439,6 @@ function Calendar(props) {
     </>
     );
 }
+
 
 export default Calendar;

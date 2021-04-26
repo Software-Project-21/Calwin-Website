@@ -2,6 +2,7 @@ import {firebase} from "@firebase/app";
 import "@firebase/auth";
 import "@firebase/database";
 import "@firebase/firestore";
+import "@firebase/messaging"
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -15,7 +16,9 @@ const firebaseConfig = {
   measurementId: "G-7HB9HTS4RC"
 };
 
+
 firebase.initializeApp(firebaseConfig);
+
 
 const auth = firebase.auth();
 // var database = firebase.database();

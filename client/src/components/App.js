@@ -17,14 +17,24 @@ import HomePage from './Home/HomePage';
 import { AuthProvider} from './Auth/AuthContext';
 import HolidayContext from './Home/HolidayContext';
 import moment from 'moment';
+import firebase from '../firbase';
+
 // axios.defaults.withCredentials = true;
  
 function App() {
 
+  const messaging = firebase.messaging();
+  messaging.requestPermission()
+  .then(function() {
+    console.log("yes");
+  })
+  .catch(function(err) {
+    console.log('no');
+  })
+
   const [val,setVal] = useState(moment());
 
   return (
-
     <Router>
         <HolidayContext val={val}>
     <AuthProvider>
