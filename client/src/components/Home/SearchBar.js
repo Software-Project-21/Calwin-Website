@@ -93,6 +93,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SearchBar() {
+  const [text,setText] = React.useState("");
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -140,6 +141,9 @@ export default function SearchBar() {
     </Menu>
   );
 
+  function setSearchValue(e){
+    setText(e.target.value);
+  }
   const mobileMenuId = "primary-search-account-menu-mobile";
   const renderMobileMenu = (
     <Menu
@@ -174,7 +178,6 @@ export default function SearchBar() {
       </MenuItem>
     </Menu>
   );
-
   return (
     <div className={classes.grow}>
       <AppBar position="static" className={classes.root}>
@@ -190,6 +193,8 @@ export default function SearchBar() {
                 input: classes.inputInput
               }}
               inputProps={{ "aria-label": "search" }}
+              value = {text}
+              onChange = {setSearchValue}
             />
           </div>
           <div className={classes.grow} />
