@@ -10,6 +10,7 @@ import DatePicker from './DatePicker';
 import TimePicker from "./TimePicker";
 import firebase from '../../firbase';
 import { useAuth } from '../Auth/AuthContext';
+import EmailTags from './EmailTags';
 
 const db = firebase.firestore();
 
@@ -31,6 +32,7 @@ function EditEvent(props) {
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [startTime,setStartTime] = useState(new Date());
     const [endTime,setEndTime] = useState(new Date());  
+    const [pid,setPid] = useState([]);
     const {currentUser} = useAuth();
 
     const handleClose = () => {
@@ -39,14 +41,16 @@ function EditEvent(props) {
     };
 
     const handleSubmit = () => {
+
+
         const eve = {
-            id: props.eventId,
             title: title,
             description: desc,
             eventDay : firebase.firestore.Timestamp.fromDate(selectedDate),
             startTime: firebase.firestore.Timestamp.fromDate(startTime),
             endTime: firebase.firestore.Timestamp.fromDate(endTime)
         }
+
         const newEvents = [...props.events];
         const id = props.eventId;
         // console.log(id);
@@ -56,16 +60,49 @@ function EditEvent(props) {
                 ind = index;
             }
         });
-        newEvents[ind] = eve;
-        console.log(newEvents);
+        newEvents[ind] = {...eve,id:id,primary:true};
+        // console.log(newEvents);
         db.collection("users").doc(currentUser.uid).update({
             events: newEvents
         });
+
+        db.collection("events").doc(id).set({
+           ...eve,sharedWith: pid 
+        },{merge:true});
+
+        const userRef = db.collection("users");
+        var docs = userRef.where("events", "array-contains",{...eve,id:id,primary:true});
+        docs.get().then((qSnap) => {
+            qSnap.forEach((doc) => {
+                var index = -1;
+                doc.data().events.forEach((el,indi) => {
+                    if(el.id===id){
+                        index = indi;
+                    }
+                })
+            })
+        })
+        invite(id);
         props.setEvents(newEvents);
         props.setEdit(false);
         props.setEventId("");
         clear();
     } 
+
+    const invite = (id) =>{
+        const invite = {
+            eventId: id,
+            name: currentUser.displayName
+        }
+        // console.log(invite);
+        pid.forEach(el => {
+            if(el){
+                db.collection('users').doc(el.id).update({
+                    invitations: firebase.firestore.FieldValue.arrayUnion(invite)
+                })
+            }
+        });
+    }
 
     const clear = () => {
         setTitle("");
@@ -73,6 +110,7 @@ function EditEvent(props) {
         setSelectedDate(new Date());
         setStartTime(new Date());
         setEndTime(new Date());
+        setPid([]);
     }
 
     const descriptionElementRef = React.useRef(null);
@@ -104,7 +142,6 @@ function EditEvent(props) {
                         console.log(el);
                         console.log(id);
                         if(el.id===id){
-                            // const data = el.data();
                             setTitle(el.title);
                             setDesc(el.description);
                             setSelectedDate(el.eventDay.toDate());
@@ -114,11 +151,18 @@ function EditEvent(props) {
                     });
                 }
             })
+            
+            db.collection("events").doc(id).get().then((doc) => {
+                if(doc.exists){
+                    const el = doc.data();
+                    setPid(el.sharedWith);
+                }
+            })
         }
     },[props.eventId,currentUser])
 
     return (
-        // <div>
+        <>
             <Dialog
             open={props.edit}
             onClose={handleClose}
@@ -145,6 +189,7 @@ function EditEvent(props) {
                     />
                     <DatePicker selectedDate={selectedDate} setSelectedDate={setSelectedDate} setStartTime={setStartTime} setEndTime={setEndTime}/>
                     <TimePicker startTime={startTime} setStartTime={setStartTime} endTime={endTime} setEndTime={setEndTime} />
+                    <EmailTags pid={pid} setPid={setPid} />
                 </form>
             </DialogContent>
             <DialogActions>
@@ -155,8 +200,9 @@ function EditEvent(props) {
                 Save
             </Button>
             </DialogActions>
-        </Dialog>
-        // </div>
+            </Dialog>
+         
+    </>
     );
 }
 

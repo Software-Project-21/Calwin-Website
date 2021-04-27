@@ -13,7 +13,7 @@ import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import {useAuth} from "../Auth/AuthContext";
 import { Avatar, Typography } from "@material-ui/core";
-import { useHistory } from "react-router";
+import { Redirect, useHistory } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -194,7 +194,7 @@ export default function SearchBar() {
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton aria-label="show 17 new notifications" color="inherit">
+            <IconButton aria-label="show 17 new notifications" color="inherit" onClick={<Redirect to="/notifications" />} >
               <Badge badgeContent={14} color="secondary">
                 <NotificationsIcon style={{ color: "black" }} />
               </Badge>

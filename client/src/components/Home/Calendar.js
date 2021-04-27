@@ -59,6 +59,19 @@ function Calendar(props) {
     useEffect(() => {
         db.collection("users").doc(currentUser.uid).onSnapshot((doc) => {
             if(doc.exists){
+                // let ev = [];
+                // console.log(doc.data().events.length);
+                // if(doc.data().events){
+                //     doc.data().events.forEach((el) => {
+                //         el.get().then(res => {
+                //             // console.log(res.data());
+                //             ev.push(res.data());
+                //         })
+                //     })
+                //     setEvents(ev);
+                // }
+                // console.log(ev);
+                
                 // console.log(doc.data());
                 setEvents(doc.data().events);
             }
@@ -118,14 +131,23 @@ function Calendar(props) {
     }
 
     function handleEdit(event) {
-        setEdit(true);
-        setEventId(event.id);
+        if(event.primary){
+            setEdit(true);
+            setEventId(event.id);
+        } else {
+            alert("Cannot edit shared event");
+        }
     }
 
     function handleDelete(event) {
 
         db.collection("users").doc(currentUser.uid).update({
             events: events.filter(eve => eve.id!==event.id)
+        })
+        db.collection("events").doc(event.id).delete().then(() => {
+            console.log("Document Successfully Deleted");
+        }).catch((err) => {
+            console.error("Error Removing Document: " + err);
         })
         setEvents(events.filter(eve => eve.id!==event.id));
     }
@@ -240,16 +262,7 @@ function Calendar(props) {
         }
     }
 
-    // function Butt() {
-        
-    //     return(
-    //         <div>
-    //             <button onClick={notify}>
-    //             hehe</button>
-    //         </div>
-    //     )
-    // }
-
+    // console.log(events);
     return (
         <>
         <ReactNotification />
@@ -424,7 +437,8 @@ function Calendar(props) {
             return "";
         })}
         {numEvents===0 && <div style={{textAlign:"center", marginTop:"50%"}}><h1>No Event</h1></div> }
-        {console.log(numEvents)}
+        {/* {console.log(numEvents)} */}
+        {/* {console.log(numEvents)} */}
     </div>
     <div style={{textAlign:"right"} }>
     <Fab color="primary" aria-label="add">

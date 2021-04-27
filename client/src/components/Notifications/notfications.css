@@ -1,0 +1,18 @@
+.invites-list{
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    height: 89vh;
+}
+
+.container{
+    margin: 10px 0px;
+    width: 100%;
+}
+
+.card{
+    padding: 1%;
+    border: #dadce0 1px solid;
+    display: flex;
+    flex-direction: column;
+}

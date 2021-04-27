@@ -19,18 +19,11 @@ import HolidayContext from './Home/HolidayContext';
 import moment from 'moment';
 import firebase from '../firbase';
 
+import Notifications from './Notifications/Notifications';
 // axios.defaults.withCredentials = true;
  
 function App() {
 
-  const messaging = firebase.messaging();
-  messaging.requestPermission()
-  .then(function() {
-    console.log("yes");
-  })
-  .catch(function(err) {
-    console.log('no');
-  })
 
   const [val,setVal] = useState(moment());
 
@@ -47,6 +40,7 @@ function App() {
             render={(props) => <HomePage val={val} setVal={setVal} {...props} />}
           />
           <Route path="/login" component={Login}/>
+          <Route path="/notifications" component={Notifications}  />
         </Switch>
         </AuthProvider>
         </HolidayContext>

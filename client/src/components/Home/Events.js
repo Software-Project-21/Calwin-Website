@@ -12,6 +12,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import EditEvent from '../Events/EditEvent';
+import { Redirect } from 'react-router';
 // import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 
 const db = firebase.firestore();
@@ -56,14 +57,26 @@ function Events() {
     }
 
     function handleEdit(event) {
-        setEdit(true);
-        setEventId(event.id);
+        if(event.primary){
+            setEdit(true);
+            setEventId(event.id);
+        } else {
+            alert("Cannot edit shared event");
+        }
     }
 
     function handleDelete(event) {
 
+        // console.log(event.id);   
+
         db.collection("users").doc(currentUser.uid).update({
             events: events.filter(eve => eve.id!==event.id)
+        })
+
+        db.collection("events").doc(event.id).delete().then(() => {
+            console.log("Document Successfully Deleted");
+        }).catch((err) => {
+            console.error("Error Removing Document: " + err);
         })
         setEvents(events.filter(eve => eve.id!==event.id));
     }
@@ -80,18 +93,59 @@ function Events() {
     }
 
     useEffect(() => {
-        db.collection("users").doc(currentUser.uid).onSnapshot((doc) => {
-            if(doc.exists){
-                // console.log(doc.data());
-                setEvents(doc.data().events);
-            }
-        });
+        if(currentUser){
+            db.collection("users").doc(currentUser.uid).onSnapshot((doc) => {
+                if(doc.exists){
+                    // console.log(doc.data());
+                    setEvents(doc.data().events);
+                    // if(doc.data().newEv){
+                    //     doc.data().newEv[0].get().then(res => {
+                    //         console.log(res.data());
+                    //     });
+                    //     // console.log(doc.data().newEv[0].get());
+                    // }
+                    // let ev = [];
+
+                    // if(doc.data().events){
+                    //     doc.data().events.forEach(el => {
+                    //         el.get().then(res =>{
+                    //             ev.push(res.data());
+                    //         })
+                    //     });
+                    //     setEvents(ev);
+                    // }
+
+                }
+
+            });
+        }
     },[currentUser])
+
+    // useEffect(() => {
+    //     if(navigator.geolocation){
+    //         navigator.permissions
+    //             .query({name:"geolocation"})
+    //             .then(function(res){
+    //                 if(res.state ==="granted"){
+    //                     console.log(res.state);
+    //                 } else if(res.state==="prompt"){
+    //                     console.log(res.state);
+    //                 } else if(res.state==="denied"){
+    //                     console.log("denied");
+    //                 }
+    //                 res.onchange = function () {
+    //                     console.log(res.state);
+    //                 }
+    //             })
+    //     } else{
+    //         alert("Sorry not available")
+    //     }
+    // },[])
 
     return (
         <>
-        
-        <div style={{display:"flex"}}>
+        {currentUser ?
+        (<div style={{display:"flex"}}>
             <Sidebar
                 // show={false}
             />
@@ -195,8 +249,11 @@ function Events() {
                 }
             </div>
             </div>
-        </div>
-        {edit ? <EditEvent events={events} setEvents={setEvents} setEdit={setEdit} edit={edit} eventId={eventId} setEventId={setEventId} scroll='paper'/> : ""}
+        </div>)
+
+        : <Redirect to="/login"/>
+        }
+        {edit ? <EditEvent events={events} setEvents={setEvents} setEdit={setEdit} edit={edit} eventId={eventId} setEventId={setEventId} scroll='paper'/> : ""})
         </>
     );
 }
