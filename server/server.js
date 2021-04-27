@@ -25,5 +25,5 @@ app.use("/",authMiddleware);
 
 
 app.listen(port, function(){
-    console.log("Server started locally at port 5000");
+    console.log("Server started locally at port 8080");
 });

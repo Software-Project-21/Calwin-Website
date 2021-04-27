@@ -11,7 +11,8 @@ import TimePicker from "./TimePicker";
 import firebase from '../../firbase';
 import { useAuth } from '../Auth/AuthContext';
 // import nextId from "react-id-generator";
-import uniqid from "uniqid";
+// import uniqid from "uniqid";
+import EmailTags from './EmailTags';
 
 const db = firebase.firestore();
 
@@ -33,6 +34,8 @@ function AddEvent(props) {
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [startTime,setStartTime] = useState(new Date());
     const [endTime,setEndTime] = useState(new Date());  
+    // const [people,setPeople] = useState([]);
+    const [pid,setPid] = useState([]);
     const {currentUser} = useAuth();
 
     const handleClose = () => {
@@ -41,20 +44,82 @@ function AddEvent(props) {
     };
 
     const handleSubmit = () => {
-        const eve = {
-            id: uniqid(),
+        var eve = {
+            // id: uniqid(),
             title: title,
             description: desc,
             eventDay : firebase.firestore.Timestamp.fromDate(selectedDate),
             startTime: firebase.firestore.Timestamp.fromDate(startTime),
-            endTime: firebase.firestore.Timestamp.fromDate(endTime)
+            endTime: firebase.firestore.Timestamp.fromDate(endTime),
+            // admin: currentUser.uid
+            // sharedWith: people
         }
-        db.collection('users').doc(currentUser.uid).update({
-            events: firebase.firestore.FieldValue.arrayUnion(eve)
-        });
+
+        // db.collection('users').get().then((querySnapshot) => {
+        //     querySnapshot.forEach((doc) => {
+        //         var eml = doc.data().email;
+        //         // console.log(eml);
+        //         people.forEach((el,ind) => {
+        //             // console.log(el+"p");
+        //             if(el===eml){
+        //                 var peopleId = [...people];
+        //                 peopleId[ind] = doc.id;
+        //                 setPeople(peopleId);
+        //             }
+        //         });
+        //     })
+        // })
+
+        // setPeople(peopleId);
+        // console.log(people);
+        var id = "";
+        db.collection('events').add({
+            ...eve,
+            sharedWith: pid,
+            admin: currentUser.uid
+        }).then(docRef => {
+            eve = {...eve,id:docRef.id,primary: true};
+            id = docRef.id;
+            db.collection('users').doc(currentUser.uid).update({
+                events: firebase.firestore.FieldValue.arrayUnion(eve)
+            });
+            invite(id);
+        })
+
         props.setOpen(false);
+        // console.log(eve);
+        
         clear();
     } 
+
+    const invite = (id) =>{
+        const invite = {
+            eventId: id,
+            name: currentUser.displayName
+            // title: title
+        }
+        console.log(invite);
+        pid.forEach(el => {
+            if(el){
+                db.collection('users').doc(el.id).update({
+                    invitations: firebase.firestore.FieldValue.arrayUnion(invite)
+                })
+            }
+        });
+        // db.collection('users').get().then((qSnap) => {
+        //     qSnap.forEach((doc) => {
+        //         var em = doc.data().email;
+        //         if(pid.some(el => el.email===em)){
+        //             db.collection('users').doc(doc.id).update({
+        //                 invitations: firebase.firestore.FieldValue.arrayUnion({
+        //                     eventId: id,
+        //                     admin: currentUser.displayName
+        //                 })
+        //             })
+        //         }
+        //     })
+        // })
+    }
 
     const clear = () => {
         setTitle("");
@@ -62,6 +127,8 @@ function AddEvent(props) {
         setSelectedDate(new Date());
         setStartTime(new Date());
         setEndTime(new Date());
+        // setPeople([]);
+        setPid([]);
     }
 
     const descriptionElementRef = React.useRef(null);
@@ -111,6 +178,7 @@ function AddEvent(props) {
                     />
                     <DatePicker selectedDate={selectedDate} setSelectedDate={setSelectedDate} setStartTime={setStartTime} setEndTime={setEndTime}/>
                     <TimePicker startTime={startTime} setStartTime={setStartTime} endTime={endTime} setEndTime={setEndTime} />
+                    <EmailTags pid={pid} setPid={setPid} />
                 </form>
             </DialogContent>
             <DialogActions>
