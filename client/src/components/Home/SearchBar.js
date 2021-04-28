@@ -14,6 +14,10 @@ import MoreIcon from "@material-ui/icons/MoreVert";
 import {useAuth} from "../Auth/AuthContext";
 import { Avatar, Typography } from "@material-ui/core";
 import { Redirect, useHistory } from "react-router";
+import firebase from '../../firbase';
+
+const db =firebase.firestore();
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -92,11 +96,14 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+
+
 export default function SearchBar() {
   const [text,setText] = React.useState("");
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [invites,setInvites] = React.useState([]);
 
   const {logOut,currentUser}  = useAuth();
   const isMenuOpen = Boolean(anchorEl);
@@ -141,6 +148,14 @@ export default function SearchBar() {
     </Menu>
   );
 
+  React.useEffect(() => {
+    db.collection('users').doc(currentUser.uid).onSnapshot((doc) => {
+        if(doc.exists){
+            setInvites(doc.data().invitations);
+        }
+    })
+},[currentUser])
+
   function setSearchValue(e){
     setText(e.target.value);
   }
@@ -157,7 +172,7 @@ export default function SearchBar() {
     >
       <MenuItem>
         <IconButton aria-label="show 17 new notifications" color="inherit">
-          <Badge badgeContent={17} color="secondary">
+          <Badge badgeContent={invites.length} color="secondary">
             <NotificationsIcon
               style={{ color: "black"}}
             />
@@ -199,8 +214,8 @@ export default function SearchBar() {
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton aria-label="show 17 new notifications" color="inherit" onClick={<Redirect to="/notifications" />} >
-              <Badge badgeContent={14} color="secondary">
+            <IconButton color="inherit" onClick={()=> history.push("/notifications")} >
+              <Badge badgeContent={invites.length} color="secondary">
                 <NotificationsIcon style={{ color: "black" }} />
               </Badge>
             </IconButton>

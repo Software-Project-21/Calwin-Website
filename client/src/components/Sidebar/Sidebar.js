@@ -92,7 +92,7 @@ export default function Sidebar(props) {
         </div>
         <List className="list">
           <Tooltip title="Go To Today" placement="right" className={classes.tooltip}>
-          <ListItem button className="list-item" onClick={() => props.setVal(moment())} disabled={true}>
+          <ListItem button className="list-item" onClick={() => props.setVal(moment())} disabled={!props.visible}>
             <TodayIcon style={{color:"#ffffff"}}/>
           </ListItem>
           </Tooltip>
