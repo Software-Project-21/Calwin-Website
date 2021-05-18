@@ -19,6 +19,7 @@ import AddEvent from "../Events/AddEvent";
 import ReactNotification from 'react-notifications-component';
 import {store} from 'react-notifications-component';
 import 'animate.css'
+import moment from 'moment';
 import 'react-notifications-component/dist/theme.css'
 
 const useStyles = makeStyles((theme) => ({
@@ -97,7 +98,7 @@ function Calendar(props) {
             {
                 const A = events[i].startTime.toDate();
                 const B = new Date();
-                const C = Math.abs((A - B));
+                const C = (A - B);
                 if ( C < 600000 && C > 540000)
                 {
                     var tit = events[i].title;
@@ -176,9 +177,9 @@ function Calendar(props) {
             events.forEach((eve,index) => {
                 if(eve.eventDay.toDate().getMonth() === day.toDate().getMonth()){
                     if(eve.eventDay.toDate().getDate() === day.toDate().getDate()){
-                        if(index%3 ===0) s = s+"purple-card";
-                        else if(index%3 ===1)  s = s + "green-card";
-                        else s = s + "orange-card";
+                        if(index%3 ===0) s = s+" purple-card";
+                        else if(index%3 ===1)  s = s + " green-card";
+                        else s = s + " orange-card";
                     }
                 }
             });
@@ -189,6 +190,10 @@ function Calendar(props) {
     function curMonth() {
         return props.val.format("MMMM");
     }
+
+    // function curWeek() {
+    //     return props.val.format("WWWW");
+    // }
 
     function curYear() {
         return props.val.format("YYYY");
@@ -201,6 +206,7 @@ function Calendar(props) {
     function prevMonth(){
         return props.val.clone().subtract(1,"month");
     }
+
     function handleNext(){
         if(viewType==="month")
         {
@@ -212,6 +218,7 @@ function Calendar(props) {
         }
         
     }
+
     function handlePrev(){
         if(viewType==="month")
         {
@@ -242,12 +249,33 @@ function Calendar(props) {
 
     
     var weeklyTime = Array(24).fill(null).map(() => Array(8));
-    for(var i=0;i<24;i++)
+    var timeStyle = Array(24).fill(null).map(() => Array(8));
+
+    const start = props.val.clone().startOf('week');
+    const end = props.val.clone().endOf('week');
+    var days = [];
+    for (var l = 0; l <= 6; l++) {
+        days.push(moment(start).add(l, 'days').format("D"));
+    }
+
+        for(var i=0;i<24;i++)
     {
+        
+        
         for(var j=0;j<8;j++)
         {
             weeklyTime[i][j] = "";
+            timeStyle[i][j] = "";
+            // events.forEach()
+            // if(j!==0){
+            //     for(var k=0;k<5;k++){
+
+            //     }
+            // }
         }
+        // events.forEach(ev => {
+        //     var start = ev.startTime.toDate().
+        // })
         if(i<10)
         {
             weeklyTime[i][0] = "0"+i+":00";
@@ -257,6 +285,48 @@ function Calendar(props) {
             weeklyTime[i][0] = i+":00";
         }
     }
+
+    for(let k=1;k<8;k++){
+        const dt = days[k-1];
+        if(events){
+            events.forEach((ev,ind) => {
+                const st = ev.startTime.toDate().getDate();
+                const h = ev.startTime.toDate().getHours();
+                const e = ev.endTime.toDate().getHours();
+                // const m = ev.startTime.toDate().getMinutes();
+                // console.log(e);
+                if(st == dt){
+                    
+                    const lolu =Math.round((h + e)/2);
+                    // console.log(lolu);
+                    if(weeklyTime[lolu][k]==="")
+                        weeklyTime[lolu][k] += ev.title;
+                    else
+                        weeklyTime[lolu][k] += ", "+ev.title;
+                    for(let lol=h;lol<=e;lol++){
+                        if(weeklyTime[lol][k]==="")
+                            weeklyTime[lol][k] = " ";
+                        timeStyle[lol][k] = ind%3;
+                    }
+                }
+                // console.log(st);
+                // return "";
+            })
+        }
+    }
+    
+    const timeStyles = (ind1,ind2) => {
+        let s = "timeStampMain timeStamp";
+        if(weeklyTime[ind1][ind2] !== ""){
+            const index = timeStyle[ind1][ind2];
+            if(index%3 ===0) s = s+" purple-card";
+            if(index%3 ===1)  s = s + " green-card";
+            if(index%3 === 2) s = s + " orange-card";
+        }
+        return s;
+    }
+
+    // console.log(days);
 
     // console.log(events);
     return (
@@ -315,15 +385,30 @@ function Calendar(props) {
                     {week.map((day) => (
                         <div className="day" onClick={() => props.setVal(day)}>
                             <div className={dayStyles(day)}>{day.format("D")}</div>
+                            <div className="dot-container">  
+                                    {holidays.map((holiday) => {
+                                        const dayH = holiday.date.datetime.day;
+                                        const monthH = holiday.date.datetime.month;
+                                        const month = day.format("M");
+                                        const curDay = day.format("D");
+                                        if(month==monthH && curDay==dayH){
+                                            return (
+                                                <Tooltip title={holiday.name} placement="bottom">
+                                                <div className="dot"></div>
+                                                </Tooltip>
+                                            );
+                                        } else return "";
+                                    })}
+                            </div>
                         </div>
                     ))}
                 </div>
                 <div className="time-matrix" style={{display:"flex"}}>
-                    {weeklyTime.map((timeRow) => (
+                    {weeklyTime.map((timeRow,ind) => (
                         <div style={{display:"flex"}}>
                             {timeRow.map((timeEvent,index) => (
                                 index !== 0 ? 
-                                    <div className="timeStampMain timeStamp" style={{display:"flex", alignItems:"center", justifyContent:"center"}}>
+                                    <div className={timeStyles(ind,index)} style={{display:"flex", alignItems:"center", justifyContent:"center"}}>
                                 {timeEvent}
                             </div>
                                     :
@@ -435,9 +520,9 @@ function Calendar(props) {
         {numEvents===0 && <div style={{textAlign:"center", marginTop:"50%"}}><h1>No Event</h1></div> }
     </div>
     <div style={{textAlign:"right"} }>
-    <Fab color="primary" aria-label="add">
-        <AddIcon onClick={() => handleAddEvent('paper')}/>
-      </Fab>
+    <Fab color="primary" aria-label="add" onClick={() => handleAddEvent('paper')}>
+        <AddIcon />
+    </Fab>
     
     </div>
     </div>

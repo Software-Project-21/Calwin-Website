@@ -40,35 +40,37 @@ function Notifications() {
         if(invites){
             // var data = [];
             invites.forEach((el) => {
-                db.collection('events').doc(el.eventId).get().then((doc) => {
-                    if(doc.exists){
-                        const data = {
-                            ...doc.data(),
-                            admin: el.admin,
-                            id: el.eventId,
-                            primary: false
-                        }
+                if(el.accepted===false){
+                    db.collection('events').doc(el.eventId).get().then((doc) => {
+                        if(doc.exists){
+                            const data = {
+                                ...doc.data(),
+                                admin: el.admin,
+                                id: el.eventId,
+                                primary: false
+                            }
 
-                        // invDetails.map(el => {
-                        //     console.log(JSON.stringify(el));
-                        //     return "";
-                        //     // return JSON.stringify(el)!==JSON.stringify(data)
-                        // });
-                        // console.log(newDet);
-                        // setInvDetails(...newDet,data);
-                        console.log(JSON.stringify(data));
-                        if(!invDetails.some(el => _.isEqual(el,data))){
-                           setInvDetails((prev) =>[
-                               ...prev,
-                               data
-                           ]);
+                            // invDetails.map(el => {
+                            //     console.log(JSON.stringify(el));
+                            //     return "";
+                            //     // return JSON.stringify(el)!==JSON.stringify(data)
+                            // });
+                            // console.log(newDet);
+                            // setInvDetails(...newDet,data);
+                            console.log(JSON.stringify(data));
+                            if(!invDetails.some(el => _.isEqual(el,data))){
+                            setInvDetails((prev) =>[
+                                ...prev,
+                                data
+                            ]);
+                            }
+                            // data.push({
+                            //     ...doc.data(),
+                            //     admin: el.admin
+                            // });
                         }
-                        // data.push({
-                        //     ...doc.data(),
-                        //     admin: el.admin
-                        // });
-                    }
-                })
+                    })
+                }
             })
             // setInvDetails(data);
         }
@@ -86,6 +88,15 @@ function Notifications() {
 
     const handleAccept = (event) => {
         setInvites(invites.filter(el => el.eventId!==event.id));
+        let index;
+        invites.forEach((el,ind) => {
+            if(el.eventId===event.id){
+                index = ind;
+            }
+        })
+        if(index){
+            console.log(index);
+        }
         setInvDetails(invDetails.filter(el => !_.isEqual(el,event)));
         var eve = event;
         delete eve.admin;
