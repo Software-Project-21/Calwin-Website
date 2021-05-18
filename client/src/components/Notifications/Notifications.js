@@ -111,7 +111,9 @@ function Notifications() {
         <>
         {   currentUser ? (
                 <div style={{display: "flex"}}>
-                    <Sidebar />
+                    <Sidebar 
+                        visible={false}
+                    />
                     <div style={{width: "100%"}}>
                         <SearchBar/>
                         <div className="container">

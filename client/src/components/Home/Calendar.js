@@ -93,10 +93,6 @@ function Calendar(props) {
 
     useEffect(() => {
         const interval = setInterval(() => {
-            // if(events[4].eventDay.toDate().getDate()===new Date().getDate)
-            // {
-            //     console.log("Yes");
-            // }
             for(var i=0;i<events.length;i++)
             {
                 const A = events[i].startTime.toDate();
@@ -121,7 +117,7 @@ function Calendar(props) {
                     })
                 }
             }
-          }, 45000);
+          }, 5000);
           return () => clearInterval(interval);
     },[events])
 
@@ -437,8 +433,6 @@ function Calendar(props) {
             return "";
         })}
         {numEvents===0 && <div style={{textAlign:"center", marginTop:"50%"}}><h1>No Event</h1></div> }
-        {/* {console.log(numEvents)} */}
-        {/* {console.log(numEvents)} */}
     </div>
     <div style={{textAlign:"right"} }>
     <Fab color="primary" aria-label="add">

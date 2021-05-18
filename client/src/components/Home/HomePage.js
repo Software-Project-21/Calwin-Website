@@ -12,6 +12,7 @@ export default function HomePage(props) {
             {currentUser ? 
             <div style={{display:"flex"}}>
                 <Sidebar
+                    visible={true}
                     val={props.val}
                     setVal={props.setVal}
                 />

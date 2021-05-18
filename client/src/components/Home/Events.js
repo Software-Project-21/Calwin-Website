@@ -147,7 +147,7 @@ function Events() {
         {currentUser ?
         (<div style={{display:"flex"}}>
             <Sidebar
-                // show={false}
+                visible={false}
             />
             <div style={{width:"100%"}} >
                 <SearchBar/>
