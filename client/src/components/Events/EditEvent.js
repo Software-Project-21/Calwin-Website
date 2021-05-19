@@ -69,19 +69,7 @@ function EditEvent(props) {
         db.collection("events").doc(id).set({
            ...eve,sharedWith: pid 
         },{merge:true});
-
-        const userRef = db.collection("users");
-        var docs = userRef.where("events", "array-contains",{...eve,id:id,primary:true});
-        docs.get().then((qSnap) => {
-            qSnap.forEach((doc) => {
-                var index = -1;
-                doc.data().events.forEach((el,indi) => {
-                    if(el.id===id){
-                        index = indi;
-                    }
-                })
-            })
-        })
+        editEve(id,eve);
         invite(id);
         props.setEvents(newEvents);
         props.setEdit(false);
@@ -89,10 +77,61 @@ function EditEvent(props) {
         clear();
     } 
 
+    const editEve = (id,eve) => {
+        console.log("reached");
+        pid.forEach(el => {
+            if(el){
+                console.log("here");
+                // var ev = [];
+                // var ev;
+                db.collection("users").doc(el.id).get().then((doc) => {
+                    if(doc.exists){
+
+                        var ev = doc.data().events;
+                        // console.log(ev);
+                        if(ev){
+                            doc.data().events.forEach((ele,ind) => {
+                                // console.log(el.id);
+                                if(ele.id===id){
+                                    // console.log("now");
+                                    ev[ind] = {...eve,id:id,primary:false};
+                                    console.log(ev);
+                                    db.collection("users").doc(el.id).update({
+                                        events: ev
+                                    })
+                                }
+                            })
+                        }
+                    }
+                });
+                // Soft e
+// softe01035780@gmail.com
+                // console.log(ev);
+                // if(ev){
+                // console.log(ev);
+                // }
+                // console.log(id);
+                // var ind = -1;
+                // ev.forEach((el,index)=>{
+                //     if(el.id==id){
+                //         ind = index;
+                //         // console.log(index);
+                //     }
+                // })
+                // console.log(ind);
+                // ev[ind] = {...eve,id:id,primary:false};
+                // db.collection("users").doc(el.id).update({
+                //     events: ev
+                // });
+            }
+        })
+    }
+
     const invite = (id) =>{
         const invite = {
             eventId: id,
-            name: currentUser.displayName
+            name: currentUser.displayName,
+            accepted:false
         }
         // console.log(invite);
         pid.forEach(el => {
@@ -139,8 +178,8 @@ function EditEvent(props) {
             db.collection("users").doc(currentUser.uid).get().then((doc) => {
                 if(doc.exists){
                     doc.data().events.forEach(el => {
-                        console.log(el);
-                        console.log(id);
+                        // console.log(el);
+                        // console.log(id);
                         if(el.id===id){
                             setTitle(el.title);
                             setDesc(el.description);

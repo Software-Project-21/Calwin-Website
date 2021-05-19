@@ -17,6 +17,7 @@ import HomePage from './Home/HomePage';
 import { AuthProvider} from './Auth/AuthContext';
 import HolidayContext from './Home/HolidayContext';
 import moment from 'moment';
+import SearchPage from "./SearchPage/SearchPage";
 import firebase from '../firbase';
 
 import Notifications from './Notifications/Notifications';
@@ -40,6 +41,7 @@ function App() {
           />
           <Route path="/login" component={Login}/>
           <Route path="/notifications" component={Notifications}  />
+          <Route path="/search" component={SearchPage} />
         </Switch>
         </AuthProvider>
         </HolidayContext>

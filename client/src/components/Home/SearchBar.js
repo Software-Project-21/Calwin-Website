@@ -132,6 +132,15 @@ export default function SearchBar() {
     history.push("/");
   }
 
+  const handleSearch = (e) => {
+    if (e.key === 'Enter') {
+      console.log('Enter key pressed');
+      if(text!==""){
+      history.push("/search?q=" + text);
+      }
+    }
+  }
+
   const menuId = "primary-search-account-menu";
   const renderMenu = (
     <Menu
@@ -172,7 +181,7 @@ export default function SearchBar() {
     >
       <MenuItem>
         <IconButton aria-label="show 17 new notifications" color="inherit">
-          <Badge badgeContent="69" color="secondary">
+          <Badge badgeContent="17" color="secondary">
             <NotificationsIcon
               style={{ color: "black"}}
             />
@@ -210,12 +219,13 @@ export default function SearchBar() {
               inputProps={{ "aria-label": "search" }}
               value = {text}
               onChange = {setSearchValue}
+              onKeyPress={handleSearch}
             />
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             <IconButton color="inherit" onClick={()=> history.push("/notifications")} >
-              <Badge badgeContent="69" color="secondary">
+              <Badge badgeContent="17" color="secondary">
                 <NotificationsIcon style={{ color: "black" }} />
               </Badge>
             </IconButton>

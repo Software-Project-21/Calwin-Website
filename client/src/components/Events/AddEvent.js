@@ -95,7 +95,8 @@ function AddEvent(props) {
     const invite = (id) =>{
         const invite = {
             eventId: id,
-            name: currentUser.displayName
+            name: currentUser.displayName,
+            accepted: false
             // title: title
         }
         console.log(invite);
