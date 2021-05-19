@@ -172,7 +172,7 @@ export default function SearchBar() {
     >
       <MenuItem>
         <IconButton aria-label="show 17 new notifications" color="inherit">
-          <Badge badgeContent={invites.length} color="secondary">
+          <Badge badgeContent="69" color="secondary">
             <NotificationsIcon
               style={{ color: "black"}}
             />
@@ -215,7 +215,7 @@ export default function SearchBar() {
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             <IconButton color="inherit" onClick={()=> history.push("/notifications")} >
-              <Badge badgeContent={invites.length} color="secondary">
+              <Badge badgeContent="69" color="secondary">
                 <NotificationsIcon style={{ color: "black" }} />
               </Badge>
             </IconButton>
