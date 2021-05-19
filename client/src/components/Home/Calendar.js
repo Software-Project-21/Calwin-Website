@@ -118,7 +118,7 @@ function Calendar(props) {
                     })
                 }
             }
-          }, 5000);
+          }, 59000);
           return () => clearInterval(interval);
     },[events])
 

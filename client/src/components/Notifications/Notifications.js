@@ -16,6 +16,7 @@ function Notifications() {
     const {currentUser} = useAuth();
     const [invites,setInvites] = useState([]);
     const [invDetails,setInvDetails] = useState([]);
+    const [accept,setAccept] = useState([]);
 
     useEffect(() => {
         db.collection('users').doc(currentUser.uid).onSnapshot((doc) => {
@@ -39,8 +40,10 @@ function Notifications() {
     useEffect(()=> {
         if(invites){
             // var data = [];
-            invites.forEach((el) => {
+            invites.forEach((el,ind) => {
+                
                 if(el.accepted===false){
+                    accept[ind] = false;
                     db.collection('events').doc(el.eventId).get().then((doc) => {
                         if(doc.exists){
                             const data = {
@@ -86,22 +89,17 @@ function Notifications() {
         },{merge:true})
     }
 
-    const handleAccept = (event) => {
-        setInvites(invites.filter(el => el.eventId!==event.id));
-        let index;
-        invites.forEach((el,ind) => {
-            if(el.eventId===event.id){
-                index = ind;
-            }
-        })
-        if(index){
-            console.log(index);
-        }
-        setInvDetails(invDetails.filter(el => !_.isEqual(el,event)));
+    const handleAccept = (event,index) => {
+        var newArr = [...accept];
+        newArr[index] = !newArr[index];
+        setAccept(newArr);
+        db.collection('users').doc(currentUser.uid).set({
+            invitations: invites.filter(el => el.eventId!==event.id)
+        },{merge:true});
+
         var eve = event;
         delete eve.admin;
         delete eve.sharedWith;
-
         db.collection('users').doc(currentUser.uid).update(
             {events: firebase.firestore.FieldValue.arrayUnion(eve)}
         )
@@ -109,14 +107,12 @@ function Notifications() {
         db.collection('events').doc(event.id).update(
             {acceptedUsers: firebase.firestore.FieldValue.arrayUnion(currentUser.uid)}
         )
-
-        db.collection('users').doc(currentUser.uid).set({
-            invitations: invites.filter(el => el.eventId!==event.id)
-        },{merge:true})
+        setInvites(invites.filter(el => el.eventId!==event.id));
+        setInvDetails(invDetails.filter(el => !_.isEqual(el,event)));
+        // console.log(invDetails);
+        // console.log(invites);
+        // changeit(event);
     }
-
-    console.log(invDetails);
-    console.log(invites);
 
     return (
         <>
@@ -131,7 +127,7 @@ function Notifications() {
                             <div style={{textAlign: "center", fontWeight: "700",fontSize: "1.5rem"}}>Notifications</div>
                             <div className="invites-list">
                             {console.log(invDetails)}
-                                {invDetails && invDetails.map((invite) => (
+                                {invDetails && invDetails.map((invite,index) => (
                                     <div className="card">
                                        <div>
                                         <span style={{fontWeight:"700",marginRight:"5px"}}>{invite.admin} </span> invited you to <span style={{fontWeight:"700",marginLeft:"5px"}}>{invite.title}</span>
@@ -151,8 +147,12 @@ function Notifications() {
                                         <div style={{display: "flex",justifyContent:"space-between",flexDirection: "row"}}>
                                             <div>{`${formatAMPM(invite.startTime.toDate())} - ${formatAMPM(invite.endTime.toDate())}`}</div>
                                             <div>
-                                                <CheckCircleIcon style={{color:"green"}} onClick={() => handleAccept(invite)} />
+                                            {accept[index] ? <h1> </h1> :
+                                                <div>
+                                                <CheckCircleIcon style={{color:"green"}} onClick={ () => handleAccept(invite,index)} />
                                                 <CancelIcon style={{marginLeft:"5px",color:"red"}} onClick={() => handleCancel(invite)}/>
+                                                </div>
+                                            }
                                             </div>
                                         </div>
                                        </div>
