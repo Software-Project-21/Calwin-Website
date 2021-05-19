@@ -44,52 +44,63 @@ function AddEvent(props) {
     };
 
     const handleSubmit = () => {
-        var eve = {
-            // id: uniqid(),
-            title: title,
-            description: desc,
-            eventDay : firebase.firestore.Timestamp.fromDate(selectedDate),
-            startTime: firebase.firestore.Timestamp.fromDate(startTime),
-            endTime: firebase.firestore.Timestamp.fromDate(endTime),
-            // admin: currentUser.uid
-            // sharedWith: people
+        if(title=="")
+        {
+            alert("Event title can't be Empty!");
         }
+        else if(startTime.valueOf() > endTime.valueOf())
+        {
+            alert("Please Select a Valid [Start Time, End Time] Combination!");
+        }
+        else
+        {
+            var eve = {
+                // id: uniqid(),
+                title: title,
+                description: desc,
+                eventDay : firebase.firestore.Timestamp.fromDate(selectedDate),
+                startTime: firebase.firestore.Timestamp.fromDate(startTime),
+                endTime: firebase.firestore.Timestamp.fromDate(endTime),
+                // admin: currentUser.uid
+                // sharedWith: people
+            }
 
-        // db.collection('users').get().then((querySnapshot) => {
-        //     querySnapshot.forEach((doc) => {
-        //         var eml = doc.data().email;
-        //         // console.log(eml);
-        //         people.forEach((el,ind) => {
-        //             // console.log(el+"p");
-        //             if(el===eml){
-        //                 var peopleId = [...people];
-        //                 peopleId[ind] = doc.id;
-        //                 setPeople(peopleId);
-        //             }
-        //         });
-        //     })
-        // })
+            // db.collection('users').get().then((querySnapshot) => {
+            //     querySnapshot.forEach((doc) => {
+            //         var eml = doc.data().email;
+            //         // console.log(eml);
+            //         people.forEach((el,ind) => {
+            //             // console.log(el+"p");
+            //             if(el===eml){
+            //                 var peopleId = [...people];
+            //                 peopleId[ind] = doc.id;
+            //                 setPeople(peopleId);
+            //             }
+            //         });
+            //     })
+            // })
 
-        // setPeople(peopleId);
-        // console.log(people);
-        var id = "";
-        db.collection('events').add({
-            ...eve,
-            sharedWith: pid,
-            admin: currentUser.uid
-        }).then(docRef => {
-            eve = {...eve,id:docRef.id,primary: true};
-            id = docRef.id;
-            db.collection('users').doc(currentUser.uid).update({
-                events: firebase.firestore.FieldValue.arrayUnion(eve)
-            });
-            invite(id);
-        })
+            // setPeople(peopleId);
+            // console.log(people);
+            var id = "";
+            db.collection('events').add({
+                ...eve,
+                sharedWith: pid,
+                admin: currentUser.uid
+            }).then(docRef => {
+                eve = {...eve,id:docRef.id,primary: true};
+                id = docRef.id;
+                db.collection('users').doc(currentUser.uid).update({
+                    events: firebase.firestore.FieldValue.arrayUnion(eve)
+                });
+                invite(id);
+            })
 
-        props.setOpen(false);
-        // console.log(eve);
-        
-        clear();
+            props.setOpen(false);
+            // console.log(eve);
+            
+            clear();
+        }
     } 
 
     const invite = (id) =>{

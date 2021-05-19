@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 120,
   },
   selectEmpty: {
-    marginTop: theme.spacing(2),
+    marginTop: theme.spacing(2)
   },
 }));
 
@@ -118,7 +118,7 @@ function Calendar(props) {
                     })
                 }
             }
-          }, 59000);
+          }, 50000);
           return () => clearInterval(interval);
     },[events])
 

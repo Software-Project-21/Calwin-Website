@@ -7,6 +7,10 @@ import firebase from '../../firbase';
 import "./notfications.css";
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import CancelIcon from '@material-ui/icons/Cancel';
+import {store} from 'react-notifications-component';
+import 'react-notifications-component/dist/theme.css';
+import ReactNotification from 'react-notifications-component';
+import 'animate.css';
 
 const _ = require('lodash');
 
@@ -80,6 +84,21 @@ function Notifications() {
     },[invites])
 
     const handleCancel =  (invite) => {
+        var tit=invite.title;
+        store.addNotification({
+            title: "Invitation Rejected",
+            message: tit,
+            type: "danger",
+            container: "top-right",
+            insert: "top",
+            animationIn: ["animated","fadeIn"],
+            animationOut: ["animated","fadeOut"],
+            width: 450,
+            // dismiss: {
+            //     duration: 10000,
+            //     showIcon: true
+            // }
+        });
         setInvDetails(invDetails.filter(el => !_.isEqual(el,invite)));
         // console.log(invites);
         setInvites(invites.filter(el => el.eventId!==invite.id));
@@ -90,6 +109,21 @@ function Notifications() {
     }
 
     const handleAccept = (event,index) => {
+        var tit=event.title;
+        store.addNotification({
+            title: "Invitation Accepted",
+            message: tit,
+            type: "success",
+            container: "top-right",
+            insert: "top",
+            animationIn: ["animated","fadeIn"],
+            animationOut: ["animated","fadeOut"],
+            width: 450,
+            // dismiss: {
+            //     duration: 10000,
+            //     showIcon: true
+            // }
+        });
         var newArr = [...accept];
         newArr[index] = !newArr[index];
         setAccept(newArr);
@@ -116,6 +150,7 @@ function Notifications() {
 
     return (
         <>
+        <ReactNotification />
         {   currentUser ? (
                 <div style={{display: "flex"}}>
                     <Sidebar 
