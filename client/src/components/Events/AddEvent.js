@@ -48,6 +48,10 @@ function AddEvent(props) {
         {
             alert("Event title can't be Empty!");
         }
+        else if(startTime.valueOf() > endTime.valueOf())
+        {
+            alert("Please Select a Valid [Start Time, End Time] Combination!");
+        }
         else
         {
             var eve = {
