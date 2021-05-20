@@ -158,7 +158,7 @@ function Notifications() {
                     />
                     <div style={{width: "100%"}}>
                         <SearchBar/>
-                        <div className="container">
+                        <div className="noti-container">
                             <div style={{textAlign: "center", fontWeight: "700",fontSize: "1.5rem"}}>Notifications</div>
                             <div className="invites-list">
                             {console.log(invDetails)}

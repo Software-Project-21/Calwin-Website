@@ -1,6 +1,14 @@
+.container {
+  margin: -5% 5%;
+}
+
 .home__hero-section {
   color: #fff;
   padding: 160px 0;
+}
+
+.img {
+  text-align: center;
 }
 
 .home__hero-row {
@@ -27,6 +35,7 @@
 
 .home__hero-text-wrapper {
   max-width: 540px;
+  padding-left: 20px;
   padding-top: 0;
   padding-bottom: 60px;
 }
@@ -70,10 +79,11 @@
 
 .home__hero-img {
   max-width: 95%;
-  margin-top: 0;
-  margin-right: 0;
-  margin-left: 10px;
-  padding-right: 0;
+  width: 800px;
+  /* margin-top: 0;
+  margin-right: 0; */
+  /* margin-left: 10px;  */
+  /* padding-right: 0; */
 }
 
 img {

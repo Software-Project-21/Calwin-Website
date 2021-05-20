@@ -60,7 +60,7 @@ function Navbar() {
     <>
       <IconContext.Provider value={{ color: '#fff' }}>
         <nav className='navbar'>
-          <div className='navbar-container container'>
+          <div className='navbar-container container1'>
             <Link to='/' className='navbar-logo' onClick={closeMobileMenu}>
               <MdFingerprint className='navbar-icon' />
               CalWin

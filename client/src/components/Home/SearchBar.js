@@ -180,8 +180,8 @@ export default function SearchBar() {
       onClose={handleMobileMenuClose}
     >
       <MenuItem>
-        <IconButton aria-label="show 17 new notifications" color="inherit">
-          <Badge badgeContent="17" color="secondary">
+        <IconButton aria-label="show new notifications" color="inherit">
+          <Badge badgeContent={typeof invites!=="undefined" && invites.length>0 ? invites.length : "0" } color="secondary">
             <NotificationsIcon
               style={{ color: "black"}}
             />
@@ -225,7 +225,7 @@ export default function SearchBar() {
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             <IconButton color="inherit" onClick={()=> history.push("/notifications")} >
-              <Badge badgeContent="17" color="secondary">
+              <Badge badgeContent={typeof invites!=="undefined" && invites.length>0 ? invites.length : "0" } color="secondary">
                 <NotificationsIcon style={{ color: "black" }} />
               </Badge>
             </IconButton>
