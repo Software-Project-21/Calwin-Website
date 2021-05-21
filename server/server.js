@@ -28,7 +28,6 @@ if(process.env.NODE_ENV==='production'){
 
 app.use("/",authMiddleware);
 
-
 if(process.env.NODE_ENV === 'production')
 {
   app.get("*", (req, res) => { 
@@ -37,5 +36,5 @@ if(process.env.NODE_ENV === 'production')
 }
 
 app.listen(port, function(){
-    console.log("Server started locally at port 5000");
+    console.log(`Server started at port ${port}`);
 });
