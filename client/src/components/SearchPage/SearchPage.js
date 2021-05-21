@@ -25,7 +25,8 @@ function SearchPage(props) {
     const {holidays} = React.useContext(HolidaysContext);
     const [res,setRes] = useState([]);
     const [eve,setEve] = useState([]);
-    const [expand,setExpand] = useState([]);
+    const [expandH,setExpandH] = useState([]);
+    const [expandE,setExpandE] = useState([]);
     const [eventId,setEventId] = useState("");
     const [edit,setEdit] = useState(false);
 
@@ -42,7 +43,7 @@ function SearchPage(props) {
             const ini = holidays.map(obj => (
                 obj.open
             ));
-            setExpand(ini);
+            setExpandH(ini);
         }
     },[res,holidays])
 
@@ -63,14 +64,18 @@ function SearchPage(props) {
                 if(key1>key2) return 1;
                 return 0;
             });
+            var newArr = [...expandE];
+            searchEvents.forEach((ev,ind) => {
+                newArr[ind] = false;
+            });
             setEve(searchEvents);
+            setExpandE(newArr);
             // console.log();
         }
         if(holidays){
             var searchHolidays = holidays.filter((holiday) => holiday.name.toLowerCase().includes(val.toLowerCase()));
             setRes(searchHolidays);
         }
-        var s = "this is an example";
 
     },[val,holidays,events])
 
@@ -85,10 +90,16 @@ function SearchPage(props) {
         return strTime;
     }
 
-    function handleExpand(index){
-        const newArr = [...expand];
+    function handleExpandH(index){
+        const newArr = [...expandH];
         newArr[index] = !newArr[index];
-        setExpand(newArr);
+        setExpandH(newArr);
+    }
+
+    function handleExpandE(index){
+        const newArr = [...expandE];
+        newArr[index] = !newArr[index];
+        setExpandE(newArr);
     }
 
     function handleEdit(event) {
@@ -127,7 +138,10 @@ function SearchPage(props) {
                     />
                     <div style={{width:"100%"}} >
                         <SearchBar/>
-                        <div>
+                        <div style={{paddingTop:"20px"}}>
+                            <div style={{textAlign:"center",fontWeight:"700",fontSize:"1.5rem",marginBottom:"20px"}}>
+                                Search Results
+                            </div>
                             <div className="event-list" style={{paddingLeft:"2%", paddingRight:"2%"}}>
                                 {res.map((holiday,index) => (
                                     <div className="card">
@@ -142,7 +156,7 @@ function SearchPage(props) {
                                             {moment(holiday.date.iso).format('dddd').substr(0,3)}
                                             </div>
                                         </div>
-                                        <div onClick={() => handleExpand(index)} className="content" style={{display:"flex",flexGrow:"3",fontWeight:"600",flexDirection:"column"}}>
+                                        <div onClick={() => handleExpandH(index)} className="content" style={{display:"flex",flexGrow:"3",fontWeight:"600",flexDirection:"column"}}>
                                             <div style={{display:"flex"}}>
                                                 <div style={{display:"flex",marginRight:"30px"}}>
                                                     <div style={{height:"10px",width:"10px",borderRadius:"100%",backgroundColor:"green",margin:"5px 5px 0 0"}}>
@@ -153,7 +167,7 @@ function SearchPage(props) {
                                                     {holiday.name}
                                                 </div>
                                             </div>
-                                            { expand[index] ? (
+                                            { expandH[index] ? (
                                                 <div>
                                                     <div style={{padding:"20px",paddingLeft:"0"}}>
                                                         <div>{holiday.description}</div>
@@ -189,7 +203,7 @@ function SearchPage(props) {
                                             {event.title}
                                         </div>
                                     </div>
-                                    { expand[index] ? (
+                                    { expandE[index] ? (
                                         <div>
                                             <div style={{padding:"20px",paddingLeft:"0"}}>
                                                 <div>{event.description==="" ? "No Description Provided" : event.description}</div>
@@ -200,7 +214,7 @@ function SearchPage(props) {
                                     <div style={{textAlign:"right"}}>
                                             <EditIcon fontSize="small" onClick={() => handleEdit(event)} style={{cursor:"pointer"}}/>
                                             <DeleteIcon fontSize="small" onClick={() => handleDelete(event)} style={{marginLeft: "10px",cursor:"pointer"}}/>
-                                            {!expand[index] ? <ExpandMoreIcon fontSize="small" onClick={() => handleExpand(index)} style={{marginLeft:"10px",marginRight:"10px",cursor:"pointer"}}/> : <ExpandLessIcon fontSize="small" onClick={() => handleExpand(index)} style={{marginLeft:"10px",marginRight:"10px",cursor:"pointer"}}/>}
+                                            {!expandE[index] ? <ExpandMoreIcon fontSize="small" onClick={() => handleExpandE(index)} style={{marginLeft:"10px",marginRight:"10px",cursor:"pointer"}}/> : <ExpandLessIcon fontSize="small" onClick={() => handleExpandE(index)} style={{marginLeft:"10px",marginRight:"10px",cursor:"pointer"}}/>}
                                     </div>
                                 </div>
                             </div>
