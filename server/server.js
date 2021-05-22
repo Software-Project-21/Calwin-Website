@@ -23,9 +23,9 @@ app.use(express.json());
     })
   );
 
-// if(process.env.NODE_ENV==='production'){
-//   app.use(express.static(path.join(__dirname, "../client/build")));
-// }
+if(process.env.NODE_ENV==='production'){
+  app.use(express.static(path.join(__dirname, "../client/build")));
+}
 
 // app.use("/",authMiddleware);
 app.use("/api/invite",invitesRoute);
@@ -36,12 +36,12 @@ app.use("/api/invite",invitesRoute);
 //   console.log("aa gaye yaha");
 // });
 
-// if(process.env.NODE_ENV === 'production')
-// {
-//   app.get("*", (req, res) => { 
-//     res.sendFile(path.join(__dirname , "../client/build/index.html"));
-//   });
-// }
+if(process.env.NODE_ENV === 'production')
+{
+  app.get("*", (req, res) => { 
+    res.sendFile(path.join(__dirname , "../client/build/index.html"));
+  });
+}
 
 app.listen(port, function(){
     console.log(`Server started at port ${port}`);
