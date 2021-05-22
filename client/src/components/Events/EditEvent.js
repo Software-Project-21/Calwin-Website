@@ -11,6 +11,8 @@ import TimePicker from "./TimePicker";
 import firebase from '../../firbase';
 import { useAuth } from '../Auth/AuthContext';
 import EmailTags from './EmailTags';
+import axios from 'axios';
+import SERVER_URL from "../../utils/constants";
 
 const db = firebase.firestore();
 
@@ -127,6 +129,20 @@ function EditEvent(props) {
         })
     }
 
+    const sendInviteEmail = (event,emails) => {
+        axios
+            .post(`${SERVER_URL}/api/invite`,{
+                event: event,
+                emails: emails 
+            })
+            .then(res => {
+                console.log("Email Send Status: " + res.status);
+            })
+            .catch(err =>{
+                console.log(err);
+            })
+    }
+
     const invite = (id) =>{
         const invite = {
             eventId: id,
@@ -134,13 +150,33 @@ function EditEvent(props) {
             accepted:false
         }
         // console.log(invite);
+        var emails = [];
+        // var event = {
+        //     name:currentUser.displayName
+        // };
+        // var event = {};
         pid.forEach(el => {
             if(el){
                 db.collection('users').doc(el.id).update({
                     invitations: firebase.firestore.FieldValue.arrayUnion(invite)
                 })
             }
+            emails.push(el.email);
         });
+        db.collection('events').doc(invite.eventId).get().then((doc) => {
+            if(doc.exists){
+                // var data = doc.data();
+                // event = {...event,data};
+                // event = doc.data();
+                let data = doc.data();
+                data.name = currentUser.displayName;
+                sendInviteEmail(data,emails);
+                console.log(data);
+                // console.log(emails);
+            }
+        }).catch(err => {
+            console.log(err);
+        })
     }
 
     const clear = () => {

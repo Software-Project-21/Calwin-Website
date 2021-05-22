@@ -43,7 +43,7 @@ function EmailTags(props) {
                     console.log("yes");
                     arr.push({
                         email: val,
-                        id: doc.id
+                        id: doc.id  
                     });
                     // props.setPid((prev) => [
                     //     ...prev,

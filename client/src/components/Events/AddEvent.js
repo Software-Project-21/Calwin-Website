@@ -10,6 +10,8 @@ import DatePicker from './DatePicker';
 import TimePicker from "./TimePicker";
 import firebase from '../../firbase';
 import { useAuth } from '../Auth/AuthContext';
+import SERVER_URL from "../../utils/constants";
+import axios from 'axios';
 // import nextId from "react-id-generator";
 // import uniqid from "uniqid";
 import EmailTags from './EmailTags';
@@ -43,6 +45,20 @@ function AddEvent(props) {
         clear();
     };
 
+    const sendInviteEmail = (event,emails) => {
+        axios
+            .post(`${SERVER_URL}/api/invite`,{
+                event: event,
+                emails: emails 
+            })
+            .then(res => {
+                console.log("Email Send Status: " + res.status);
+            })
+            .catch(err =>{
+                console.log(err);
+            })
+    }
+
     const handleSubmit = () => {
         if(title=="")
         {
@@ -65,23 +81,6 @@ function AddEvent(props) {
                 // sharedWith: people
             }
 
-            // db.collection('users').get().then((querySnapshot) => {
-            //     querySnapshot.forEach((doc) => {
-            //         var eml = doc.data().email;
-            //         // console.log(eml);
-            //         people.forEach((el,ind) => {
-            //             // console.log(el+"p");
-            //             if(el===eml){
-            //                 var peopleId = [...people];
-            //                 peopleId[ind] = doc.id;
-            //                 setPeople(peopleId);
-            //             }
-            //         });
-            //     })
-            // })
-
-            // setPeople(peopleId);
-            // console.log(people);
             var id = "";
             db.collection('events').add({
                 ...eve,
@@ -110,27 +109,33 @@ function AddEvent(props) {
             accepted: false
             // title: title
         }
-        console.log(invite);
+        // console.log(invite);
+        var emails = [];
+        // var event = {
+        //     name:currentUser.displayName
+        // };
+        // var event = {};
         pid.forEach(el => {
             if(el){
                 db.collection('users').doc(el.id).update({
                     invitations: firebase.firestore.FieldValue.arrayUnion(invite)
                 })
             }
+            emails.push(el.email);
         });
-        // db.collection('users').get().then((qSnap) => {
-        //     qSnap.forEach((doc) => {
-        //         var em = doc.data().email;
-        //         if(pid.some(el => el.email===em)){
-        //             db.collection('users').doc(doc.id).update({
-        //                 invitations: firebase.firestore.FieldValue.arrayUnion({
-        //                     eventId: id,
-        //                     admin: currentUser.displayName
-        //                 })
-        //             })
-        //         }
-        //     })
-        // })
+        db.collection('events').doc(invite.eventId).get().then((doc) => {
+            if(doc.exists){
+                // var data = doc.data();
+                // event = {...event,data};
+                // event = doc.data();
+                let data = doc.data();
+                data.name = currentUser.displayName;
+                sendInviteEmail(data,emails);
+            }
+        }).catch(err => {
+            console.log(err);
+        })
+
     }
 
     const clear = () => {
