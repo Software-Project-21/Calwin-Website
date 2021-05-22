@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const authMiddleware = require("./Middleware/auth");
 const invitesRoute = require("./routes/invite");
 const cors = require('cors');
+require('dotenv').config();
 // const https = require("https");
 const axios = require("axios");
 const path = require('path');
