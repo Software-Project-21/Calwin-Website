@@ -20,9 +20,11 @@ function Footer() {
           Download Calwin for Android 
         </p>
         <div className='input-areas'>
-            <Button buttonStyle='btn--outline' onclick="location.href='https://drive.google.com/file/d/1MkwkGoOT4bIEfn1DeI7AYq7GhmCj5bvl/view?usp=sharing'">
+          <a href="https://drive.google.com/file/d/1MkwkGoOT4bIEfn1DeI7AYq7GhmCj5bvl/view?usp=sharing">
+            <Button buttonStyle='btn--outline'>
               <FaGooglePlay /> Download APK
             </Button>
+          </a>
         </div>
       </section>
       <section className='social-media'>
