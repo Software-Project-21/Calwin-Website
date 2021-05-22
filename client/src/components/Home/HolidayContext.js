@@ -18,7 +18,7 @@ export default function HolidayContext(props) {
         navigator.geolocation.getCurrentPosition(function(loc){
             console.log(loc);
         })
-        axios.get(`https://calendarific.com/api/v2/holidays?&api_key=54ecef6b8ec5f05fe471b4b8029d0c539cf8b67c&country=${location}&year=${props.val.clone().format('YYYY')}`)
+        axios.get(`https://calendarific.com/api/v2/holidays?&api_key=${process.env.REACT_APP_API_KEY}&country=${location}&year=${props.val.clone().format('YYYY')}`)
         .then(res => res.data)
         .then(data =>{
             let val = data.response.holidays;
